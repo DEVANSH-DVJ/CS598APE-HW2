@@ -177,7 +177,7 @@ float accuracy(const std::vector<float> &y_true, const std::vector<float> &y_pre
 
 using namespace genetic;
 
-void insertionSortPrograms(genetic::program *programs, int size) {
+void moveBestTwoToFront(genetic::program *programs, int size) {
   // set any nan values to +inf
   for (int i = 0; i < size; ++i) {
     if (std::isnan(programs[i].raw_fitness_)) {
@@ -185,16 +185,20 @@ void insertionSortPrograms(genetic::program *programs, int size) {
     }
   }
 
-  // do insertion sort
-  for (int i = 1; i < size; i++) {
-    genetic::program key(programs[i]);
-    int j = i - 1;
-
-    while (j >= 0 && (programs[j].raw_fitness_ > key.raw_fitness_)) {
-      programs[j + 1] = programs[j];
-      j--;
+  // move the best two to the front, ties keep their order
+  for (int k = 0; k < 2 && k < size; k++) {
+    int best = k;
+    for (int i = k + 1; i < size; i++) {
+      if (programs[i].raw_fitness_ < programs[best].raw_fitness_) {
+        best = i;
+      }
     }
-    programs[j + 1] = key;
+
+    genetic::program key(programs[best]);
+    for (int j = best; j > k; j--) {
+      programs[j] = programs[j - 1];
+    }
+    programs[k] = key;
   }
 }
 
@@ -282,7 +286,7 @@ void run_symbolic_regression(const std::string &dataset_file) {
   // }
 
   // Predict on top 2 candidates
-  insertionSortPrograms(final_programs, params.population_size);
+  moveBestTwoToFront(final_programs, params.population_size);
 
   std::vector<float> y_pred1(X_test.size());
   genetic::symRegPredict(X_test_flat.data(), X_test.size(), &final_programs[0], y_pred1.data());
@@ -417,7 +421,7 @@ void run_symbolic_classification(const std::string &dataset_file) {
   // }
 
   // Predict classes for best 2 programs acc to training
-  insertionSortPrograms(final_programs, params.population_size);
+  moveBestTwoToFront(final_programs, params.population_size);
   std::vector<float> y_pred1(X_test.size());
   genetic::symClfPredict(X_test_flat.data(), X_test.size(), params, &final_programs[0],
                          y_pred1.data());
@@ -566,7 +570,7 @@ void run_symbolic_reconstruction(const std::string &png_file, int K) {
       std::vector<std::vector<genetic::program>> history;
       genetic::symFit(X_train_flat.data(), y_train.data(), sample_weights.data(), X_train.size(),
                       params.num_features, params, final_programs, history);
-      insertionSortPrograms(final_programs, params.population_size);
+      moveBestTwoToFront(final_programs, params.population_size);
       genetic::program_t best_program = &final_programs[0];
 
       std::vector<float> predictions(X_test.size());
