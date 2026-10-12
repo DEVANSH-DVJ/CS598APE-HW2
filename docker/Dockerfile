@@ -23,4 +23,22 @@ RUN racket -e '(require racket/draw) (unless (send (make-bitmap 2 2) save-file "
     && test -s /tmp/racket-smoke.png \
     && rm /tmp/racket-smoke.png
 
+# Formatter for the C++ sources.
+RUN apt-get -y update && apt-get install -y --no-install-recommends clang-format-19 \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/* \
+    && update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-19 10
+
+# Plotting library for plots/scripts.
+RUN apt-get -y update && apt-get install -y --no-install-recommends python3-matplotlib \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
+
+# Flamegraph scripts and an SVG to PDF converter for plots/scripts.
+RUN apt-get -y update && apt-get install -y --no-install-recommends librsvg2-bin \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/* \
+    && git clone https://github.com/brendangregg/FlameGraph /opt/FlameGraph \
+    && git -C /opt/FlameGraph checkout -q 41fee1f99f9276008b7cd112fca19dc3ea84ac32
+
 ENV DEBIAN_FRONTEND=
