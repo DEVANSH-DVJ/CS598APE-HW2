@@ -75,7 +75,7 @@ struct node {
   /**
    * @brief Default constructor for node
    */
-  explicit node();
+  explicit node() = default;
 
   /**
    * @brief Construct a function node
@@ -101,7 +101,7 @@ struct node {
   /**
    * @param[in] src source node to be copied
    */
-  explicit node(const node &src);
+  explicit node(const node &src) = default;
 
   /**
    * @brief assignment operator
@@ -110,7 +110,7 @@ struct node {
    *
    * @return current node reference
    */
-  node &operator=(const node &src);
+  node &operator=(const node &src) = default;
 
   /** whether the current is either a variable or a constant */
   bool is_terminal() const;
