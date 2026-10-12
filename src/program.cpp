@@ -124,16 +124,12 @@ void find_batched_fitness(int n_progs, program_t d_progs, float *score, const pa
                           const int n_rows, const float *data, const float *y,
                           const float *sample_weights) {
 
-  std::vector<float> y_pred((uint64_t)n_rows * (uint64_t)n_progs);
   for (auto i = 0; i < n_progs; ++i) {
     // a reproduced program keeps its fitness
     if (d_progs[i].mut_type != mutation_t::reproduce) {
-      execute(d_progs + i, n_rows, 1, data, y_pred.data() + (uint64_t)i * n_rows);
+      find_fitness(d_progs + i, score + i, params, n_rows, data, y, sample_weights);
     }
   }
-
-  // Compute error
-  compute_metric(n_rows, n_progs, y, y_pred.data(), sample_weights, score, params);
 }
 
 void set_fitness(program &h_prog, const param &params, const int n_rows, const float *data,
