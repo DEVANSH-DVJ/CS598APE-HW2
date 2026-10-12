@@ -124,6 +124,7 @@ void find_batched_fitness(int n_progs, program_t d_progs, float *score, const pa
                           const int n_rows, const float *data, const float *y,
                           const float *sample_weights) {
 
+#pragma omp parallel for schedule(dynamic)
   for (auto i = 0; i < n_progs; ++i) {
     // a reproduced program keeps its fitness
     if (d_progs[i].mut_type != mutation_t::reproduce) {
