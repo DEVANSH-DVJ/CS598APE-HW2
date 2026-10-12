@@ -192,4 +192,4 @@ Run the docker build for the first time to setup all the environments you need
 ./dockerbuild.sh
 ```
 
-If you now run `./dockerrun.sh` you will enter an interactive bash session with all the packages from docker installed (that script by default uses `vim/598ape`, feel free to replace it with whatever location you like if you built from scratch). The current directory (aka this folder) is mounted within `/host`. Any files you create on your personal machine will be available there, and anything you make in the container in that folder will be available on your personal machine.
+If you now run `./dockerrun.sh` you will enter an interactive bash session with all the packages from docker installed (that script by default uses `598ape-hw2`, feel free to replace it with whatever location you like if you built from scratch). The current directory (aka this folder) is mounted within `/host`. Any files you create on your personal machine will be available there, and anything you make in the container in that folder will be available on your personal machine.
