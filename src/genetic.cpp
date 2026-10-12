@@ -5,16 +5,16 @@
 #include <algorithm>
 #include <common.h>
 #include <genetic.h>
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 #include <limits>
 #include <numeric>
 #include <ostream>
 #include <philox_engine.h>
 #include <program.h>
 #include <random>
-#include <stack>
 #include <sstream>
+#include <stack>
 namespace genetic {
 
 /**
@@ -31,10 +31,9 @@ namespace genetic {
  * @param criterion     Selection criterion for choices(min/max)
  * @param parsimony     Parsimony coefficient to account for bloat
  */
-void tournament_kernel(const std::vector<program> &progs, int *win_indices,
-                       const int seed, const int n_progs, const int n_tours,
-                       const int tour_size, const int criterion,
-                       const float parsimony) {
+void tournament_kernel(const std::vector<program> &progs, int *win_indices, const int seed,
+                       const int n_progs, const int n_tours, const int tour_size,
+                       const int criterion, const float parsimony) {
   PhiloxEngine gen(seed);
   uniform_int_distribution_custom<int> rng(0, n_progs - 1);
 
@@ -88,9 +87,8 @@ void tournament_kernel(const std::vector<program> &progs, int *win_indices,
  * @param generation      Current generation id
  * @param seed            Random seed for generators
  */
-void cpp_evolve(const std::vector<program> &h_oldprogs,
-                std::vector<program> &h_nextprogs, const int n_samples,
-                const float *data, const float *y, const float *sample_weights,
+void cpp_evolve(const std::vector<program> &h_oldprogs, std::vector<program> &h_nextprogs,
+                const int n_samples, const float *data, const float *y, const float *sample_weights,
                 const param &params, const int generation, const int seed) {
   auto n_progs = params.population_size;
   auto tour_size = params.tournament_size;
@@ -139,8 +137,8 @@ void cpp_evolve(const std::vector<program> &h_oldprogs,
     std::vector<int> d_win_indices(n_tours);
 
     auto criterion = params.criterion();
-    tournament_kernel(h_oldprogs, d_win_indices.data(), seed, n_progs, n_tours,
-                      tour_size, criterion, params.parsimony_coefficient);
+    tournament_kernel(h_oldprogs, d_win_indices.data(), seed, n_progs, n_tours, tour_size,
+                      criterion, params.parsimony_coefficient);
 
     // dim3 nblks(raft::ceildiv(n_tours, GENE_TPB), 1, 1);
     // batched_tournament_kernel<<<nblks, GENE_TPB, 0, stream>>>(
@@ -159,17 +157,14 @@ void cpp_evolve(const std::vector<program> &h_oldprogs,
         // Get secondary index
         auto donor_index = d_win_indices[donor_pos];
         donor_pos++;
-        crossover(h_oldprogs[parent_index], h_oldprogs[donor_index],
-                  h_nextprogs[pos], params, h_gen);
+        crossover(h_oldprogs[parent_index], h_oldprogs[donor_index], h_nextprogs[pos], params,
+                  h_gen);
       } else if (h_nextprogs[pos].mut_type == mutation_t::subtree) {
-        subtree_mutation(h_oldprogs[parent_index], h_nextprogs[pos], params,
-                         h_gen);
+        subtree_mutation(h_oldprogs[parent_index], h_nextprogs[pos], params, h_gen);
       } else if (h_nextprogs[pos].mut_type == mutation_t::hoist) {
-        hoist_mutation(h_oldprogs[parent_index], h_nextprogs[pos], params,
-                       h_gen);
+        hoist_mutation(h_oldprogs[parent_index], h_nextprogs[pos], params, h_gen);
       } else if (h_nextprogs[pos].mut_type == mutation_t::point) {
-        point_mutation(h_oldprogs[parent_index], h_nextprogs[pos], params,
-                       h_gen);
+        point_mutation(h_oldprogs[parent_index], h_nextprogs[pos], params, h_gen);
       } else if (h_nextprogs[pos].mut_type == mutation_t::reproduce) {
         h_nextprogs[pos] = h_oldprogs[parent_index];
       } else {
@@ -179,13 +174,12 @@ void cpp_evolve(const std::vector<program> &h_oldprogs,
   }
 
   // Update raw fitness for all programs
-  set_batched_fitness(n_progs, h_nextprogs, params, n_samples, data, y,
-                      sample_weights);
+  set_batched_fitness(n_progs, h_nextprogs, params, n_samples, data, y, sample_weights);
 }
 
 float param::p_reproduce() const {
-  auto sum = this->p_crossover + this->p_subtree_mutation +
-             this->p_hoist_mutation + this->p_point_mutation;
+  auto sum = this->p_crossover + this->p_subtree_mutation + this->p_hoist_mutation +
+             this->p_point_mutation;
   auto ret = 1.f - sum;
   return fmaxf(0.f, fminf(ret, 1.f));
 }
@@ -392,9 +386,8 @@ std::string stringify(const program &prog) {
   return eqn;
 }
 
-void symFit(const float *input, const float *labels,
-            const float *sample_weights, const int n_rows, const int n_cols,
-            param &params, program_t &final_progs,
+void symFit(const float *input, const float *labels, const float *sample_weights, const int n_rows,
+            const int n_cols, param &params, program_t &final_progs,
             std::vector<std::vector<program>> &history) {
 
   // Update arity map in params - Need to do this only here, as all operations
@@ -421,8 +414,8 @@ void symFit(const float *input, const float *labels,
   // Check terminalRatio to dynamically set it
   bool growAuto = (params.terminalRatio == 0.0f);
   if (growAuto) {
-    params.terminalRatio = 1.0f * params.num_features /
-                           (params.num_features + params.function_set.size());
+    params.terminalRatio =
+        1.0f * params.num_features / (params.num_features + params.function_set.size());
   }
 
   /* Initializations */
@@ -445,8 +438,8 @@ void symFit(const float *input, const float *labels,
     auto init_seed = seed_dist(h_gen_engine);
 
     // Evolve current generation
-    cpp_evolve(h_currprogs, h_nextprogs, n_rows, input, labels, sample_weights,
-               params, (gen + 1), init_seed);
+    cpp_evolve(h_currprogs, h_nextprogs, n_rows, input, labels, sample_weights, params, (gen + 1),
+               init_seed);
 
     // Update epochs
     ++params.num_epochs;
@@ -479,8 +472,8 @@ void symFit(const float *input, const float *labels,
     // Check for stop criterion
     if ((crit == 0 && opt_fit <= params.stopping_criteria) ||
         (crit == 1 && opt_fit >= params.stopping_criteria)) {
-      std::cerr << "Early stopping criterion reached in Generation #"
-                << (gen + 1) << ", fitness=" << opt_fit << std::endl;
+      std::cerr << "Early stopping criterion reached in Generation #" << (gen + 1)
+                << ", fitness=" << opt_fit << std::endl;
       break;
     }
 
@@ -497,15 +490,14 @@ void symFit(const float *input, const float *labels,
   }
 }
 
-void symRegPredict(const float *input, const int n_rows,
-                   const program_t &best_prog, float *output) {
+void symRegPredict(const float *input, const int n_rows, const program_t &best_prog,
+                   float *output) {
   // Assume best_prog is on device
   execute(best_prog, n_rows, 1, input, output);
 }
 
-void symClfPredictProbs(const float *input, const int n_rows,
-                        const param &params, const program_t &best_prog,
-                        float *output) {
+void symClfPredictProbs(const float *input, const int n_rows, const param &params,
+                        const program_t &best_prog, float *output) {
 
   // Assume output is of shape [n_rows, 2] in colMajor format
   execute(best_prog, n_rows, 1, input, output);
@@ -538,9 +530,8 @@ void symClfPredict(const float *input, const int n_rows, const param &params,
   }
 }
 
-void symTransform(const float *input, const param &params,
-                  const program_t &final_progs, const int n_rows,
-                  const int n_cols, float *output) {
+void symTransform(const float *input, const param &params, const program_t &final_progs,
+                  const int n_rows, const int n_cols, float *output) {
   // cudaStream_t stream = handle.get_stream();
   // Execute final_progs(ordered by fitness) on input
   // output of size [n_rows,hall_of_fame]

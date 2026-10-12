@@ -1,9 +1,9 @@
-#include <stdint.h> 
+#include <stdint.h>
 
 // Salmon et al. SC 2011. Parallel random numbers: as easy as 1, 2, 3.
 //   http://www.thesalmons.org/john/random123/papers/random123sc11.pdf
 
-/* 
+/*
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -28,12 +28,12 @@ uint32_t key_[2];
 
 int philox_initialized = false;
 void philox_reset() {
-    counter_[0] = 1;
-    counter_[1] = 2;
-    counter_[2] = 3;
-    counter_[3] = 3;
-    key_[0] = 56;
-    key_[1] = 712;
+  counter_[0] = 1;
+  counter_[1] = 2;
+  counter_[2] = 3;
+  counter_[3] = 3;
+  key_[0] = 56;
+  key_[1] = 712;
 }
 // Skip the specified number of samples of 128-bits in the current stream.
 void philox_skip(uint64_t count) {
@@ -55,8 +55,7 @@ void philox_skip(uint64_t count) {
 
 // Helper function to return the lower and higher 32-bits from two 32-bit
 // integer multiplications.
-static void multiply_high_low(uint32_t a, uint32_t b, uint32_t* result_low,
-                              uint32_t* result_high) {
+static void multiply_high_low(uint32_t a, uint32_t b, uint32_t *result_low, uint32_t *result_high) {
   uint64_t product = static_cast<uint64_t>(a) * b;
   *result_low = static_cast<uint32_t>(product);
   *result_high = static_cast<uint32_t>(product >> 32);
@@ -91,10 +90,10 @@ void philox_raisekey(uint32_t key[2]) {
 // Returns a group of four random numbers using the underlying Philox
 // algorithm.
 void philox_next4(uint32_t out[4]) {
-  for (int i=0; i<4; i++)
+  for (int i = 0; i < 4; i++)
     out[i] = counter_[i];
   uint32_t key[2] = {key_[0], key_[1]};
-  for (int i=0; i<10; i++) {
+  for (int i = 0; i < 10; i++) {
     philox_oneround(out, key);
     if (i == 9)
       philox_skip(1);
@@ -110,22 +109,21 @@ uint64_t myrand() {
   }
   uint32_t out[4];
   philox_next4(out);
-  return ((uint64_t*)&out)[0];
+  return ((uint64_t *)&out)[0];
 }
 
 /// The above implements a counter-based random number algorithm
 /// Specifically it enables you to skip forward in the future by modifying
-/// a given counter variable. 
+/// a given counter variable.
 /// For example, consider the following code: https://godbolt.org/z/roEY46GeG
 #include <stdio.h>
 int main() {
-  for (int i=0; i<20; i++)
-      printf("%d : %lu\n", i, myrand());
+  for (int i = 0; i < 20; i++)
+    printf("%d : %lu\n", i, myrand());
 
   philox_initialized = false;
-  for (int i=0; i<20; i+=4) {
-      printf("%d : %lu\n", i, myrand());
-      philox_skip(3);
+  for (int i = 0; i < 20; i += 4) {
+    printf("%d : %lu\n", i, myrand());
+    philox_skip(3);
   }
 }
-

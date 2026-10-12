@@ -14,7 +14,9 @@ inline bool is_terminal(node::type t) {
   return t == node::type::variable || t == node::type::constant;
 }
 
-inline bool is_nonterminal(node::type t) { return !is_terminal(t); }
+inline bool is_nonterminal(node::type t) {
+  return !is_terminal(t);
+}
 
 inline int arity(node::type t) {
   if (node::type::unary_begin <= t && t <= node::type::unary_end) {
@@ -28,7 +30,7 @@ inline int arity(node::type t) {
 
 // `data` assumed to be stored in col-major format
 inline float evaluate_node(const node &n, const float *data, const uint64_t stride,
-                    const uint64_t idx, const float *in) {
+                           const uint64_t idx, const float *in) {
   if (n.t == node::type::constant) {
     return n.u.val;
   } else if (n.t == node::type::variable) {
@@ -44,7 +46,7 @@ inline float evaluate_node(const node &n, const float *data, const uint64_t stri
     case node::type::atan2:
       return atan2f(in[0], in[1]);
     case node::type::div:
-      return abs_inval1 < MIN_VAL ? 1.0f : (in[0]/in[1]);//fdividef(in[0], in[1]);
+      return abs_inval1 < MIN_VAL ? 1.0f : (in[0] / in[1]); // fdividef(in[0], in[1]);
     case node::type::fdim:
       return fdimf(in[0], in[1]);
     case node::type::gt:

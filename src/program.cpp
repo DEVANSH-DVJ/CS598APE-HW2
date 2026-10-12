@@ -53,14 +53,17 @@ void execute_kernel(const program_t d_progs, const float *data, float *y_pred,
 }
 
 program::program()
-    : len(0), depth(0), raw_fitness_(0.0f), metric(metric_t::mse),
-      mut_type(mutation_t::none), nodes(nullptr) {}
+    : len(0), depth(0), raw_fitness_(0.0f), metric(metric_t::mse), mut_type(mutation_t::none),
+      nodes(nullptr) {
+}
 
-program::~program() { delete[] nodes; }
+program::~program() {
+  delete[] nodes;
+}
 
 program::program(const program &src)
-    : len(src.len), depth(src.depth), raw_fitness_(src.raw_fitness_),
-      metric(src.metric), mut_type(src.mut_type) {
+    : len(src.len), depth(src.depth), raw_fitness_(src.raw_fitness_), metric(src.metric),
+      mut_type(src.mut_type) {
   nodes = new node[len];
   std::copy(src.nodes, src.nodes + src.len, nodes);
 }
@@ -80,9 +83,8 @@ program &program::operator=(const program &src) {
   return *this;
 }
 
-void compute_metric(int n_rows, int n_progs, const float *y,
-                    const float *y_pred, const float *w, float *score,
-                    const param &params) {
+void compute_metric(int n_rows, int n_progs, const float *y, const float *y_pred, const float *w,
+                    float *score, const param &params) {
   // Call appropriate metric function based on metric defined in params
   if (params.metric == metric_t::pearson) {
     weightedPearson(n_rows, n_progs, y, y_pred, w, score);
@@ -101,15 +103,14 @@ void compute_metric(int n_rows, int n_progs, const float *y,
   }
 }
 
-void execute(const program_t &d_progs, const int n_rows, const int n_progs,
-             const float *data, float *y_pred) {
+void execute(const program_t &d_progs, const int n_rows, const int n_progs, const float *data,
+             float *y_pred) {
   execute_kernel(d_progs, data, y_pred, static_cast<uint64_t>(n_rows),
                  static_cast<uint64_t>(n_progs));
 }
 
-void find_fitness(program_t d_prog, float *score, const param &params,
-                  const int n_rows, const float *data, const float *y,
-                  const float *sample_weights) {
+void find_fitness(program_t d_prog, float *score, const param &params, const int n_rows,
+                  const float *data, const float *y, const float *sample_weights) {
 
   // Compute predicted values
   std::vector<float> y_pred(n_rows);
@@ -119,22 +120,19 @@ void find_fitness(program_t d_prog, float *score, const param &params,
   compute_metric(n_rows, 1, y, y_pred.data(), sample_weights, score, params);
 }
 
-void find_batched_fitness(int n_progs, program_t d_progs, float *score,
-                          const param &params, const int n_rows,
-                          const float *data, const float *y,
+void find_batched_fitness(int n_progs, program_t d_progs, float *score, const param &params,
+                          const int n_rows, const float *data, const float *y,
                           const float *sample_weights) {
 
   std::vector<float> y_pred((uint64_t)n_rows * (uint64_t)n_progs);
   execute(d_progs, n_rows, n_progs, data, y_pred.data());
 
   // Compute error
-  compute_metric(n_rows, n_progs, y, y_pred.data(), sample_weights, score,
-                 params);
+  compute_metric(n_rows, n_progs, y, y_pred.data(), sample_weights, score, params);
 }
 
-void set_fitness(program &h_prog, const param &params, const int n_rows,
-                 const float *data, const float *y,
-                 const float *sample_weights) {
+void set_fitness(program &h_prog, const param &params, const int n_rows, const float *data,
+                 const float *y, const float *sample_weights) {
 
   std::vector<float> score(1);
 
@@ -144,15 +142,14 @@ void set_fitness(program &h_prog, const param &params, const int n_rows,
   h_prog.raw_fitness_ = score[0];
 }
 
-void set_batched_fitness(int n_progs, std::vector<program> &h_progs,
-                         const param &params, const int n_rows,
-                         const float *data, const float *y,
+void set_batched_fitness(int n_progs, std::vector<program> &h_progs, const param &params,
+                         const int n_rows, const float *data, const float *y,
                          const float *sample_weights) {
 
   std::vector<float> score(n_progs);
 
-  find_batched_fitness(n_progs, h_progs.data(), score.data(), params, n_rows,
-                       data, y, sample_weights);
+  find_batched_fitness(n_progs, h_progs.data(), score.data(), params, n_rows, data, y,
+                       sample_weights);
 
   // Update scores on host and device
   // TODO: Find a way to reduce the number of implicit memory transfers
@@ -202,8 +199,7 @@ std::pair<int, int> get_subtree(node *pnodes, int len, PhiloxEngine &rng) {
   // Compute cumulative sum
   std::partial_sum(node_probs.begin(), node_probs.end(), node_probs.begin());
 
-  start = std::lower_bound(node_probs.begin(), node_probs.end(), bound) -
-          node_probs.begin();
+  start = std::lower_bound(node_probs.begin(), node_probs.end(), bound) - node_probs.begin();
   end = start;
 
   // Iterate until all function arguments are satisfied in current subtree
@@ -263,12 +259,9 @@ void build_program(program &p_out, const param &params, PhiloxEngine &rng) {
   nodelist.reserve(1 << (MAX_STACK_SIZE));
 
   // Specify Distributions with parameters
-  uniform_int_distribution_custom<int> dist_function(
-      0, params.function_set.size() - 1);
-  uniform_int_distribution_custom<int> dist_initDepth(params.init_depth[0],
-                                                      params.init_depth[1]);
-  uniform_int_distribution_custom<int> dist_terminalChoice(0,
-                                                           params.num_features);
+  uniform_int_distribution_custom<int> dist_function(0, params.function_set.size() - 1);
+  uniform_int_distribution_custom<int> dist_initDepth(params.init_depth[0], params.init_depth[1]);
+  uniform_int_distribution_custom<int> dist_terminalChoice(0, params.num_features);
   uniform_real_distribution_custom<float> dist_constVal(params.const_range[0],
                                                         params.const_range[1]);
   bernoulli_distribution_custom dist_nodeChoice(params.terminalRatio);
@@ -294,8 +287,7 @@ void build_program(program &p_out, const param &params, PhiloxEngine &rng) {
     p_out.depth = std::max(depth, p_out.depth);
     bool node_choice = dist_nodeChoice(rng);
 
-    if ((node_choice == false || method == init_method_t::full) &&
-        depth < max_depth) {
+    if ((node_choice == false || method == init_method_t::full) && depth < max_depth) {
       // Add a function to node list
       curr_node = node(params.function_set[dist_function(rng)]);
       nodelist.push_back(curr_node);
@@ -343,17 +335,15 @@ void build_program(program &p_out, const param &params, PhiloxEngine &rng) {
   p_out.raw_fitness_ = 0.0f;
 }
 
-void point_mutation(const program &prog, program &p_out, const param &params,
-                    PhiloxEngine &rng) {
+void point_mutation(const program &prog, program &p_out, const param &params, PhiloxEngine &rng) {
   // deep-copy program
   p_out = prog;
 
   // Specify RNGs
   uniform_real_distribution_custom<float> dist_uniform(0.0f, 1.0f);
-  uniform_int_distribution_custom<int> dist_terminalChoice(0,
-                                                           params.num_features);
-  uniform_real_distribution_custom<float> dist_constantVal(
-      params.const_range[0], params.const_range[1]);
+  uniform_int_distribution_custom<int> dist_terminalChoice(0, params.num_features);
+  uniform_real_distribution_custom<float> dist_constantVal(params.const_range[0],
+                                                           params.const_range[1]);
 
   // Fill with uniform numbers
   std::vector<float> node_probs(p_out.len);
@@ -393,8 +383,8 @@ void point_mutation(const program &prog, program &p_out, const param &params,
   }
 }
 
-void crossover(const program &prog, const program &donor, program &p_out,
-               const param &params, PhiloxEngine &rng) {
+void crossover(const program &prog, const program &donor, program &p_out, const param &params,
+               PhiloxEngine &rng) {
   // Get a random subtree of prog to replace
   std::pair<int, int> prog_slice = get_subtree(prog.nodes, prog.len, rng);
   int prog_start = prog_slice.first;
@@ -429,15 +419,13 @@ void crossover(const program &prog, const program &donor, program &p_out,
     donor_end = donor_subend;
 
     // Evolve on current subspace
-    p_out.len =
-        (prog_start) + (donor_end - donor_start) + (prog.len - prog_end);
+    p_out.len = (prog_start) + (donor_end - donor_start) + (prog.len - prog_end);
     delete[] p_out.nodes;
     p_out.nodes = new node[p_out.len];
 
     // Copy slices using std::copy
     std::copy(prog.nodes, prog.nodes + prog_start, p_out.nodes);
-    std::copy(donor.nodes + donor_start, donor.nodes + donor_end,
-              p_out.nodes + prog_start);
+    std::copy(donor.nodes + donor_start, donor.nodes + donor_end, p_out.nodes + prog_start);
     std::copy(prog.nodes + prog_end, prog.nodes + prog.len,
               p_out.nodes + (prog_start) + (donor_end - donor_start));
 
@@ -448,24 +436,21 @@ void crossover(const program &prog, const program &donor, program &p_out,
   p_out.depth = output_depth;
 }
 
-void subtree_mutation(const program &prog, program &p_out, const param &params,
-                      PhiloxEngine &rng) {
+void subtree_mutation(const program &prog, program &p_out, const param &params, PhiloxEngine &rng) {
   // Generate a random program and perform crossover
   program new_program;
   build_program(new_program, params, rng);
   crossover(prog, new_program, p_out, params, rng);
 }
 
-void hoist_mutation(const program &prog, program &p_out, const param &params,
-                    PhiloxEngine &rng) {
+void hoist_mutation(const program &prog, program &p_out, const param &params, PhiloxEngine &rng) {
   // Replace program subtree with a random sub-subtree
 
   std::pair<int, int> prog_slice = get_subtree(prog.nodes, prog.len, rng);
   int prog_start = prog_slice.first;
   int prog_end = prog_slice.second;
 
-  std::pair<int, int> sub_slice =
-      get_subtree(prog.nodes + prog_start, prog_end - prog_start, rng);
+  std::pair<int, int> sub_slice = get_subtree(prog.nodes + prog_start, prog_end - prog_start, rng);
   int sub_start = sub_slice.first;
   int sub_end = sub_slice.second;
 
@@ -479,8 +464,7 @@ void hoist_mutation(const program &prog, program &p_out, const param &params,
 
   // Copy node slices using std::copy
   std::copy(prog.nodes, prog.nodes + prog_start, p_out.nodes);
-  std::copy(prog.nodes + sub_start, prog.nodes + sub_end,
-            p_out.nodes + prog_start);
+  std::copy(prog.nodes + sub_start, prog.nodes + sub_end, p_out.nodes + prog_start);
   std::copy(prog.nodes + prog_end, prog.nodes + prog.len,
             p_out.nodes + (prog_start) + (sub_end - sub_start));
 

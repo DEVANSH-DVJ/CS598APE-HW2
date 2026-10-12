@@ -32,14 +32,13 @@
 namespace utils {
 
 // Load image from PNG file
-std::tuple<std::vector<std::vector<float>>, std::vector<float>,
-           std::vector<float>, std::vector<float>>
+std::tuple<std::vector<std::vector<float>>, std::vector<float>, std::vector<float>,
+           std::vector<float>>
 load_png(const std::string &filename) {
   int width = 0, height = 0, channels = 0;
   // Request RGB for a consistent layout: grayscale is replicated, alpha
   // ignored.
-  unsigned char *pixels =
-      stbi_load(filename.c_str(), &width, &height, &channels, STBI_rgb);
+  unsigned char *pixels = stbi_load(filename.c_str(), &width, &height, &channels, STBI_rgb);
 
   std::vector<std::vector<float>> X;
   std::vector<float> r, g, b;
@@ -49,8 +48,7 @@ load_png(const std::string &filename) {
   for (int row = 0; row < height; ++row) {
     for (int col = 0; col < width; ++col) {
       const size_t i = static_cast<size_t>(row) * width + col;
-      X.push_back(
-          {(1.0f * col + 0.5f) / width, ((1.0f * row) + 0.5f) / height});
+      X.push_back({(1.0f * col + 0.5f) / width, ((1.0f * row) + 0.5f) / height});
       r.push_back(pixels[3 * i] / 255.0f);
       g.push_back(pixels[3 * i + 1] / 255.0f);
       b.push_back(pixels[3 * i + 2] / 255.0f);
@@ -95,8 +93,7 @@ load_dataset(const std::string &filename) {
 }
 
 // Convert 2D vector to column-major vector
-std::vector<float>
-flatten_column_major(const std::vector<std::vector<float>> &data) {
+std::vector<float> flatten_column_major(const std::vector<std::vector<float>> &data) {
   if (data.empty())
     return {};
 
@@ -114,8 +111,7 @@ flatten_column_major(const std::vector<std::vector<float>> &data) {
 }
 
 // Split dataset into training and testing sets
-template <typename T>
-std::pair<T, T> train_test_split(const T &data, float test_size = 0.2) {
+template <typename T> std::pair<T, T> train_test_split(const T &data, float test_size = 0.2) {
   T train, test;
   size_t test_count = static_cast<size_t>(data.size() * test_size);
   size_t train_count = data.size() - test_count;
@@ -147,8 +143,7 @@ std::pair<T, T> train_test_split(const T &data, float test_size = 0.2) {
 }
 
 // Calculate mean squared error
-float mean_squared_error(const std::vector<float> &y_true,
-                         const std::vector<float> &y_pred) {
+float mean_squared_error(const std::vector<float> &y_true, const std::vector<float> &y_pred) {
   if (y_true.size() != y_pred.size()) {
     throw std::runtime_error("Arrays must have the same length");
   }
@@ -163,16 +158,14 @@ float mean_squared_error(const std::vector<float> &y_true,
 }
 
 // Calculate accuracy for classification
-float accuracy(const std::vector<float> &y_true,
-               const std::vector<float> &y_pred) {
+float accuracy(const std::vector<float> &y_true, const std::vector<float> &y_pred) {
   if (y_true.size() != y_pred.size()) {
     throw std::runtime_error("Arrays must have the same length");
   }
 
   size_t correct = 0;
   for (size_t i = 0; i < y_true.size(); ++i) {
-    if ((y_pred[i] >= 0.5f && y_true[i] >= 0.5f) ||
-        (y_pred[i] < 0.5f && y_true[i] < 0.5f)) {
+    if ((y_pred[i] >= 0.5f && y_true[i] >= 0.5f) || (y_pred[i] < 0.5f && y_true[i] < 0.5f)) {
       correct++;
     }
   }
@@ -219,8 +212,8 @@ void run_symbolic_regression(const std::string &dataset_file) {
   auto X = dataset.first;
   auto y = dataset.second;
 
-  std::cout << ";;Dataset dimensions: " << X.size() << " samples x "
-            << X[0].size() << " features" << std::endl;
+  std::cout << ";;Dataset dimensions: " << X.size() << " samples x " << X[0].size() << " features"
+            << std::endl;
 
   // Split dataset
   auto X_split = utils::train_test_split(X);
@@ -251,16 +244,11 @@ void run_symbolic_regression(const std::string &dataset_file) {
   // Function set
   {
     using namespace genetic;
-    params.function_set = {node::type::add,  node::type::sub, node::type::mul,
-                           node::type::abs,  node::type::sin, node::type::cos,
-                           node::type::fdim, node::type::log};
+    params.function_set = {node::type::add, node::type::sub, node::type::mul,  node::type::abs,
+                           node::type::sin, node::type::cos, node::type::fdim, node::type::log};
     // Arity set
-    params.arity_set = {
-        {1,
-         {node::type::abs, node::type::sin, node::type::cos, node::type::log}},
-        {2,
-         {node::type::add, node::type::sub, node::type::mul,
-          node::type::fdim}}};
+    params.arity_set = {{1, {node::type::abs, node::type::sin, node::type::cos, node::type::log}},
+                        {2, {node::type::add, node::type::sub, node::type::mul, node::type::fdim}}};
   }
 
   params.metric = genetic::metric_t::mse; // Use MSE as the fitness metric
@@ -274,8 +262,7 @@ void run_symbolic_regression(const std::string &dataset_file) {
 
   // Running the symbolic regression
   std::cout << ";;Training symbolic regressor with " << params.population_size
-            << " population size and " << params.generations << " generations"
-            << std::endl;
+            << " population size and " << params.generations << " generations" << std::endl;
 
   // Create history vector to store programs
   genetic::program_t final_programs;
@@ -298,12 +285,10 @@ void run_symbolic_regression(const std::string &dataset_file) {
   insertionSortPrograms(final_programs, params.population_size);
 
   std::vector<float> y_pred1(X_test.size());
-  genetic::symRegPredict(X_test_flat.data(), X_test.size(), &final_programs[0],
-                         y_pred1.data());
+  genetic::symRegPredict(X_test_flat.data(), X_test.size(), &final_programs[0], y_pred1.data());
 
   std::vector<float> y_pred2(X_test.size());
-  genetic::symRegPredict(X_test_flat.data(), X_test.size(), &final_programs[1],
-                         y_pred2.data());
+  genetic::symRegPredict(X_test_flat.data(), X_test.size(), &final_programs[1], y_pred2.data());
 
   // Calculate MSE on test set
   float mse = utils::mean_squared_error(y_test, y_pred1);
@@ -315,8 +300,7 @@ void run_symbolic_regression(const std::string &dataset_file) {
     std::cout << ";;Best program 1 details:" << std::endl;
     std::cout << ";;- Length: " << best_program1->len << " nodes" << std::endl;
     std::cout << ";;- Depth: " << best_program1->depth << std::endl;
-    std::cout << ";;- Raw fitness: " << best_program1->raw_fitness_
-              << std::endl;
+    std::cout << ";;- Raw fitness: " << best_program1->raw_fitness_ << std::endl;
     std::cout << ";;- Test MSE: " << mse << std::endl;
 
     // Convert to string representation
@@ -327,8 +311,7 @@ void run_symbolic_regression(const std::string &dataset_file) {
     std::cout << ";;Best program 2 details:" << std::endl;
     std::cout << ";;- Length: " << best_program2->len << " nodes" << std::endl;
     std::cout << ";;- Depth: " << best_program2->depth << std::endl;
-    std::cout << ";;- Raw fitness: " << best_program2->raw_fitness_
-              << std::endl;
+    std::cout << ";;- Raw fitness: " << best_program2->raw_fitness_ << std::endl;
     std::cout << ";;- Test MSE: " << mse2 << std::endl;
 
     // Convert to string representation
@@ -345,8 +328,7 @@ void run_symbolic_regression(const std::string &dataset_file) {
 }
 
 void run_symbolic_classification(const std::string &dataset_file) {
-  std::cout << "\n;;===== Symbolic Classification Benchmark =====\n"
-            << std::endl;
+  std::cout << "\n;;===== Symbolic Classification Benchmark =====\n" << std::endl;
   std::cout << "(provide best-program-1 best-program-2)\n";
 
   // Initialize ctimer for end-to-end timing
@@ -360,8 +342,8 @@ void run_symbolic_classification(const std::string &dataset_file) {
   auto X = dataset.first;
   auto y = dataset.second;
 
-  std::cout << ";;Dataset dimensions: " << X.size() << " samples x "
-            << X[0].size() << " features" << std::endl;
+  std::cout << ";;Dataset dimensions: " << X.size() << " samples x " << X[0].size() << " features"
+            << std::endl;
 
   // Split dataset
   auto X_split = utils::train_test_split(X);
@@ -398,15 +380,11 @@ void run_symbolic_classification(const std::string &dataset_file) {
   // Don't worry if you see stuff like sqrt(-5) -> we consider only the absolute
   // value in that case
   params.arity_set = {
-      {1,
-       {node::type::abs, node::type::sin, node::type::cos, node::type::sq,
-        node::type::sqrt}},
-      {2,
-       {node::type::add, node::type::sub, node::type::mul, node::type::fdim}}};
+      {1, {node::type::abs, node::type::sin, node::type::cos, node::type::sq, node::type::sqrt}},
+      {2, {node::type::add, node::type::sub, node::type::mul, node::type::fdim}}};
 
-  params.metric = genetic::metric_t::logloss; // Use log loss forclassification
-  params.transformer =
-      genetic::transformer_t::sigmoid; // Use sigmoid for binary classification
+  params.metric = genetic::metric_t::logloss;           // Use log loss forclassification
+  params.transformer = genetic::transformer_t::sigmoid; // Use sigmoid for binary classification
   params.parsimony_coefficient = 0.01f;
   params.p_crossover = 0.80f; // High crossover probability
   params.p_subtree_mutation = 0.05f;
@@ -417,8 +395,7 @@ void run_symbolic_classification(const std::string &dataset_file) {
 
   // Running the symbolic classification
   std::cout << ";;Training symbolic classifier with " << params.population_size
-            << " population size and " << params.generations << " generations "
-            << std::endl;
+            << " population size and " << params.generations << " generations " << std::endl;
 
   // Create history vector to store programs
   genetic::program_t final_programs;
@@ -442,12 +419,12 @@ void run_symbolic_classification(const std::string &dataset_file) {
   // Predict classes for best 2 programs acc to training
   insertionSortPrograms(final_programs, params.population_size);
   std::vector<float> y_pred1(X_test.size());
-  genetic::symClfPredict(X_test_flat.data(), X_test.size(), params,
-                         &final_programs[0], y_pred1.data());
+  genetic::symClfPredict(X_test_flat.data(), X_test.size(), params, &final_programs[0],
+                         y_pred1.data());
 
   std::vector<float> y_pred2(X_test.size());
-  genetic::symClfPredict(X_test_flat.data(), X_test.size(), params,
-                         &final_programs[1], y_pred2.data());
+  genetic::symClfPredict(X_test_flat.data(), X_test.size(), params, &final_programs[1],
+                         y_pred2.data());
 
   float acc = utils::accuracy(y_test, y_pred1);
   float acc2 = utils::accuracy(y_test, y_pred2);
@@ -458,8 +435,7 @@ void run_symbolic_classification(const std::string &dataset_file) {
     std::cout << ";;Best program 1 details:" << std::endl;
     std::cout << ";;- Length: " << best_program1->len << " nodes" << std::endl;
     std::cout << ";;- Depth: " << best_program1->depth << std::endl;
-    std::cout << ";;- Raw fitness: " << best_program1->raw_fitness_
-              << std::endl;
+    std::cout << ";;- Raw fitness: " << best_program1->raw_fitness_ << std::endl;
     std::cout << ";;- Test accuracy: " << acc << std::endl;
 
     // Convert to string representation
@@ -470,8 +446,7 @@ void run_symbolic_classification(const std::string &dataset_file) {
     std::cout << ";;Best program 2 details:" << std::endl;
     std::cout << ";;- Length: " << best_program2->len << " nodes" << std::endl;
     std::cout << ";;- Depth: " << best_program2->depth << std::endl;
-    std::cout << ";;- Raw fitness: " << best_program2->raw_fitness_
-              << std::endl;
+    std::cout << ";;- Raw fitness: " << best_program2->raw_fitness_ << std::endl;
     std::cout << ";;- Test accuracy: " << acc2 << std::endl;
 
     // Convert to string representation
@@ -520,17 +495,17 @@ void run_symbolic_reconstruction(const std::string &png_file, int K) {
     point[0] = point[0] * input_scale + input_offset;
     point[1] = point[1] * input_scale + input_offset;
   }
-  std::cout << std::setprecision(9)
-            << "(define (model-input X) (list (+ (* " << input_scale
-            << " (list-ref X 0)) " << input_offset << ") (+ (* "
-            << input_scale << " (list-ref X 1)) " << input_offset << ")))\n";
-  std::cout << ";; " << (monochrome ? "Monochrome: one shared intensity model per run"
-                                   : "RGB: three independent channel models per run") << "\n";
+  std::cout << std::setprecision(9) << "(define (model-input X) (list (+ (* " << input_scale
+            << " (list-ref X 0)) " << input_offset << ") (+ (* " << input_scale
+            << " (list-ref X 1)) " << input_offset << ")))\n";
+  std::cout << ";; "
+            << (monochrome ? "Monochrome: one shared intensity model per run"
+                           : "RGB: three independent channel models per run")
+            << "\n";
 
   int width = 0, height = 0, channels = 0;
   stbi_info(png_file.c_str(), &width, &height, &channels);
-  std::cout << ";;Dataset dimensions: " << X.size()
-            << " samples x 2 features\n";
+  std::cout << ";;Dataset dimensions: " << X.size() << " samples x 2 features\n";
   std::cout << "(define width " << width << ")\n"
             << "(define height " << height << ")\n";
 
@@ -556,10 +531,10 @@ void run_symbolic_reconstruction(const std::string &png_file, int K) {
   params.terminalRatio = 0.3f;
   params.const_range[0] = -1.0f;
   params.const_range[1] = 1.0f;
-  params.function_set = {node::type::add, node::type::sub, node::type::mul,
-                         node::type::sin, node::type::abs};
+  params.function_set = {node::type::add, node::type::sub, node::type::mul, node::type::sin,
+                         node::type::abs};
   params.arity_set = {{1, {node::type::sin, node::type::abs}},
-                     {2, {node::type::add, node::type::sub, node::type::mul}}};
+                      {2, {node::type::add, node::type::sub, node::type::mul}}};
   params.metric = genetic::metric_t::mse;
   params.parsimony_coefficient = 0.0001f;
   params.p_crossover = 0.60f;
@@ -572,12 +547,11 @@ void run_symbolic_reconstruction(const std::string &png_file, int K) {
   const uint32_t base_seed = 2025000000;
 
   const char *channel_names[] = {"red", "green", "blue"};
-  const std::pair<std::vector<float>, std::vector<float>> *channel_splits[] = {
-      &r_split, &g_split, &b_split};
+  const std::pair<std::vector<float>, std::vector<float>> *channel_splits[] = {&r_split, &g_split,
+                                                                               &b_split};
   double rgb_mse = 0.0;
-  std::cout << ";;Training " << K << " models per channel, "
-            << params.population_size << " candidates, " << params.generations
-            << " generations per model\n";
+  std::cout << ";;Training " << K << " models per channel, " << params.population_size
+            << " candidates, " << params.generations << " generations per model\n";
 
   const int channel_count = monochrome ? 1 : 3;
   for (int channel = 0; channel < channel_count; ++channel) {
@@ -587,27 +561,22 @@ void run_symbolic_reconstruction(const std::string &png_file, int K) {
     std::cout << "(define-channel (" << channel_names[channel] << " X)\n";
 
     for (int model = 0; model < K; ++model) {
-      params.random_state =
-          base_seed + static_cast<uint32_t>(channel) * K + model;
-      genetic::program_t final_programs =
-          new genetic::program[params.population_size]();
+      params.random_state = base_seed + static_cast<uint32_t>(channel) * K + model;
+      genetic::program_t final_programs = new genetic::program[params.population_size]();
       std::vector<std::vector<genetic::program>> history;
-      genetic::symFit(X_train_flat.data(), y_train.data(),
-                      sample_weights.data(), X_train.size(),
+      genetic::symFit(X_train_flat.data(), y_train.data(), sample_weights.data(), X_train.size(),
                       params.num_features, params, final_programs, history);
       insertionSortPrograms(final_programs, params.population_size);
       genetic::program_t best_program = &final_programs[0];
 
       std::vector<float> predictions(X_test.size());
-      genetic::symRegPredict(X_test_flat.data(), X_test.size(), best_program,
-                             predictions.data());
+      genetic::symRegPredict(X_test_flat.data(), X_test.size(), best_program, predictions.data());
       for (size_t i = 0; i < predictions.size(); ++i) {
         average_predictions[i] += predictions[i] / K;
       }
-      std::cout << ";; " << channel_names[channel] << " model " << model
-                << ", seed " << params.random_state << ", training MSE "
-                << best_program->raw_fitness_ << ", test MSE "
-                << utils::mean_squared_error(y_test, predictions) << ", nodes "
+      std::cout << ";; " << channel_names[channel] << " model " << model << ", seed "
+                << params.random_state << ", training MSE " << best_program->raw_fitness_
+                << ", test MSE " << utils::mean_squared_error(y_test, predictions) << ", nodes "
                 << best_program->len << "\n";
       // stringify returns a lambda; apply it to X inside define-channel.
       std::cout << "  (" << genetic::stringify(*best_program) << " (model-input X))\n";
@@ -616,14 +585,12 @@ void run_symbolic_reconstruction(const std::string &png_file, int K) {
     std::cout << ")\n";
     float mse = utils::mean_squared_error(y_test, average_predictions);
     rgb_mse += mse / channel_count;
-    std::cout << ";; " << channel_names[channel]
-              << " averaged test MSE: " << mse << "\n";
+    std::cout << ";; " << channel_names[channel] << " averaged test MSE: " << mse << "\n";
   }
   if (monochrome) {
     std::cout << "(define green red)\n(define blue red)\n";
   }
-  std::cout << ";; RGB averaged test MSE (before display clamping): " << rgb_mse
-            << "\n";
+  std::cout << ";; RGB averaged test MSE (before display clamping): " << rgb_mse << "\n";
 
   // Channel values remain floats; clamp only when converting to PNG bytes.
   // module+ main renders on execution but not when another module imports it.
@@ -659,9 +626,8 @@ void run_symbolic_reconstruction(const std::string &png_file, int K) {
 int main(int argc, char *argv[]) {
   try {
     if (argc < 2) {
-      throw std::invalid_argument(
-          "Usage: genetic_benchmark "
-          "{diabetes|cancer|housing|silk-wave|square-wave}");
+      throw std::invalid_argument("Usage: genetic_benchmark "
+                                  "{diabetes|cancer|housing|silk-wave|square-wave}");
     }
     std::cout << "#lang racket\n";
     // Default datasets

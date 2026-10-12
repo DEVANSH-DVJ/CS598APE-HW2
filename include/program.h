@@ -74,8 +74,8 @@ typedef program *program_t;
  * @param data       Pointer to input dataset (in col-major format)
  * @param y_pred     Pointer to output of program evaluation
  */
-void execute(const program_t &d_progs, const int n_rows, const int n_progs,
-             const float *data, float *y_pred);
+void execute(const program_t &d_progs, const int n_rows, const int n_progs, const float *data,
+             float *y_pred);
 
 /**
  * @brief Compute the loss based on the metric specified in the training
@@ -91,9 +91,8 @@ void execute(const program_t &d_progs, const int n_rows, const int n_progs,
  * @param score     Device pointer to final score (SIZE = n_progs)
  * @param params    Training hyperparameters
  */
-void compute_metric(int n_rows, int n_progs, const float *y,
-                    const float *y_pred, const float *w, float *score,
-                    const param &params);
+void compute_metric(int n_rows, int n_progs, const float *y, const float *y_pred, const float *w,
+                    float *score, const param &params);
 
 /**
  * @brief Computes the fitness scores for a sngle program on the given dataset
@@ -106,9 +105,8 @@ void compute_metric(int n_rows, int n_progs, const float *y,
  * @param y               Device pointer to input labels
  * @param sample_weights  Device pointer to sample weights
  */
-void find_fitness(program_t d_prog, float *score, const param &params,
-                  const int n_rows, const float *data, const float *y,
-                  const float *sample_weights);
+void find_fitness(program_t d_prog, float *score, const param &params, const int n_rows,
+                  const float *data, const float *y, const float *sample_weights);
 
 /**
  * @brief Computes the fitness scores for all programs on the given dataset
@@ -123,9 +121,8 @@ void find_fitness(program_t d_prog, float *score, const param &params,
  * @param y               Device pointer to input labels
  * @param sample_weights  Device pointer to sample weights
  */
-void find_batched_fitness(int n_progs, program_t d_progs, float *score,
-                          const param &params, const int n_rows,
-                          const float *data, const float *y,
+void find_batched_fitness(int n_progs, program_t d_progs, float *score, const param &params,
+                          const int n_rows, const float *data, const float *y,
                           const float *sample_weights);
 
 /**
@@ -140,9 +137,8 @@ void find_batched_fitness(int n_progs, program_t d_progs, float *score,
  * @param y               Device pointer to input labels
  * @param sample_weights  Device pointer to sample weights
  */
-void set_fitness(program_t &d_prog, program &h_prog, const param &params,
-                 const int n_rows, const float *data, const float *y,
-                 const float *sample_weights);
+void set_fitness(program_t &d_prog, program &h_prog, const param &params, const int n_rows,
+                 const float *data, const float *y, const float *sample_weights);
 
 /**
  * @brief Computes and sets the fitness scores for all programs on the given
@@ -156,9 +152,8 @@ void set_fitness(program_t &d_prog, program &h_prog, const param &params,
  * @param y               Device pointer to input labels
  * @param sample_weights  Device pointer to sample weights
  */
-void set_batched_fitness(int n_progs, std::vector<program> &h_progs,
-                         const param &params, const int n_rows,
-                         const float *data, const float *y,
+void set_batched_fitness(int n_progs, std::vector<program> &h_progs, const param &params,
+                         const int n_rows, const float *data, const float *y,
                          const float *sample_weights);
 
 /**
@@ -196,8 +191,7 @@ void build_program(program &p_out, const param &params, PhiloxEngine &rng);
  * @param params  Training hyperparameters
  * @param rng     RNG to decide nodes to mutate
  */
-void point_mutation(const program &prog, program &p_out, const param &params,
-                    PhiloxEngine &rng);
+void point_mutation(const program &prog, program &p_out, const param &params, PhiloxEngine &rng);
 
 /**
  * @brief Perform a 'hoisted' crossover mutation using the parent and donor
@@ -210,8 +204,8 @@ void point_mutation(const program &prog, program &p_out, const param &params,
  * @param params  Training hyperparameters
  * @param rng     RNG for subtree selection
  */
-void crossover(const program &prog, const program &donor, program &p_out,
-               const param &params, PhiloxEngine &rng);
+void crossover(const program &prog, const program &donor, program &p_out, const param &params,
+               PhiloxEngine &rng);
 
 /**
  * @brief Performs a crossover mutation with a randomly built new program.
@@ -224,8 +218,7 @@ void crossover(const program &prog, const program &donor, program &p_out,
  * @param rng     RNG to control subtree selection and temporary program
  * addition
  */
-void subtree_mutation(const program &prog, program &p_out, const param &params,
-                      PhiloxEngine &rng);
+void subtree_mutation(const program &prog, program &p_out, const param &params, PhiloxEngine &rng);
 
 /**
  * @brief Perform a hoist mutation on a random subtree of the given program
@@ -236,6 +229,5 @@ void subtree_mutation(const program &prog, program &p_out, const param &params,
  * @param params  Training hyperparameters
  * @param rng     RNG to control subtree selection
  */
-void hoist_mutation(const program &prog, program &p_out, const param &params,
-                    PhiloxEngine &rng);
+void hoist_mutation(const program &prog, program &p_out, const param &params, PhiloxEngine &rng);
 } // namespace genetic

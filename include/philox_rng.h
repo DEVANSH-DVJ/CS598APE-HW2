@@ -1,8 +1,8 @@
 #ifndef PHILOX_RNG_H
 #define PHILOX_RNG_H
 
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 /*
  * Implementation of the Philox counter-based random number generator
@@ -34,9 +34,9 @@ extern "C" {
 
 /* Generator state */
 typedef struct {
-    uint32_t counter[4];
-    uint32_t key[2];
-    bool initialized;
+  uint32_t counter[4];
+  uint32_t key[2];
+  bool initialized;
 } philox_state_t;
 
 /* Function prototypes */

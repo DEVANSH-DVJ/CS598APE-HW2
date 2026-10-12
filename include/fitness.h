@@ -10,9 +10,8 @@
 namespace genetic {
 
 template <typename math_t = float>
-void weightedPearson(const uint64_t n_samples, const uint64_t n_progs,
-                     const math_t *Y, const math_t *X, const math_t *W,
-                     math_t *out) {
+void weightedPearson(const uint64_t n_samples, const uint64_t n_progs, const math_t *Y,
+                     const math_t *X, const math_t *W, math_t *out) {
   // Find Karl Pearson's correlation coefficient
 
   // cudaStream_t stream = h.get_stream();
@@ -96,8 +95,7 @@ void weightedPearson(const uint64_t n_samples, const uint64_t n_progs,
   {
     for (uint64_t pid = 0; pid < n_progs; ++pid) {
       for (uint64_t i = 0; i < n_samples; ++i) {
-        x_std[pid] +=
-            x_diff[pid * n_samples + i] * x_diff[pid * n_samples + i] * W[i];
+        x_std[pid] += x_diff[pid * n_samples + i] * x_diff[pid * n_samples + i] * W[i];
       }
       x_std[pid] = std::sqrt(x_std[pid]);
     }
@@ -106,8 +104,7 @@ void weightedPearson(const uint64_t n_samples, const uint64_t n_progs,
   // Cross covariance
   for (uint64_t pid = 0; pid < n_progs; ++pid) {
     for (uint64_t i = 0; i < n_samples; ++i) {
-      corr[pid * n_samples + i] =
-          N * W[i] * x_diff[pid * n_samples + i] * y_diff[i] / y_std;
+      corr[pid * n_samples + i] = N * W[i] * x_diff[pid * n_samples + i] * y_diff[i] / y_std;
     }
   }
 
@@ -136,9 +133,8 @@ struct rank_functor {
 };
 
 template <typename math_t = float>
-void weightedSpearman(const uint64_t n_samples, const uint64_t n_progs,
-                      const math_t *Y, const math_t *Y_pred, const math_t *W,
-                      math_t *out) {
+void weightedSpearman(const uint64_t n_samples, const uint64_t n_progs, const math_t *Y,
+                      const math_t *Y_pred, const math_t *W, math_t *out) {
   // Get ranks for Y in Yrank
   std::vector<math_t> Ycopy(Y, Y + n_samples);
   std::vector<size_t> rank_idx(n_samples, 0);
@@ -146,9 +142,8 @@ void weightedSpearman(const uint64_t n_samples, const uint64_t n_progs,
   std::vector<math_t> Yrank(n_samples, 0);
 
   std::iota(rank_idx.begin(), rank_idx.end(), 0);
-  std::sort(rank_idx.begin(), rank_idx.end(), [&Ycopy](size_t i1, size_t i2) {
-    return Ycopy[i1] < Ycopy[i2];
-  }); // sort_by_key
+  std::sort(rank_idx.begin(), rank_idx.end(),
+            [&Ycopy](size_t i1, size_t i2) { return Ycopy[i1] < Ycopy[i2]; }); // sort_by_key
 
   // Sort Y
   std::vector<math_t> Ysorted(n_samples);
@@ -157,8 +152,7 @@ void weightedSpearman(const uint64_t n_samples, const uint64_t n_progs,
   }
 
   std::adjacent_difference(Ysorted.begin(), Ysorted.end(), rank_diff.begin());
-  std::transform(rank_diff.begin(), rank_diff.end(), rank_diff.begin(),
-                 rank_functor());
+  std::transform(rank_diff.begin(), rank_diff.end(), rank_diff.begin(), rank_functor());
   rank_diff[0] = 1;
   std::inclusive_scan(rank_diff.begin(), rank_diff.end(),
                       rank_diff.begin()); // the actual rank
@@ -174,19 +168,16 @@ void weightedSpearman(const uint64_t n_samples, const uint64_t n_progs,
 
   for (std::size_t pid = 0; pid < n_progs; ++pid) {
     std::iota(rank_idx.begin(), rank_idx.end(), 0);
-    std::sort(rank_idx.begin(), rank_idx.end(),
-              [&Ypredcopy, pid, n_samples](size_t i1, size_t i2) {
-                return Ypredcopy[pid * n_samples + i1] <
-                       Ypredcopy[pid * n_samples + i2];
-              });
+    std::sort(rank_idx.begin(), rank_idx.end(), [&Ypredcopy, pid, n_samples](size_t i1, size_t i2) {
+      return Ypredcopy[pid * n_samples + i1] < Ypredcopy[pid * n_samples + i2];
+    });
 
     for (uint64_t i = 0; i < n_samples; ++i) {
       Ysorted[i] = Ypredcopy[pid * n_samples + rank_idx[i]];
     }
 
     std::adjacent_difference(Ysorted.begin(), Ysorted.end(), rank_diff.begin());
-    std::transform(rank_diff.begin(), rank_diff.end(), rank_diff.begin(),
-                   rank_functor());
+    std::transform(rank_diff.begin(), rank_diff.end(), rank_diff.begin(), rank_functor());
     rank_diff[0] = 1;
     std::inclusive_scan(rank_diff.begin(), rank_diff.end(), rank_diff.begin());
 
@@ -200,9 +191,8 @@ void weightedSpearman(const uint64_t n_samples, const uint64_t n_progs,
 }
 
 template <typename math_t = float>
-void meanAbsoluteError(const uint64_t n_samples, const uint64_t n_progs,
-                       const math_t *Y, const math_t *Y_pred, const math_t *W,
-                       math_t *out) {
+void meanAbsoluteError(const uint64_t n_samples, const uint64_t n_progs, const math_t *Y,
+                       const math_t *Y_pred, const math_t *W, math_t *out) {
   std::vector<math_t> error(n_samples * n_progs);
   math_t N = static_cast<math_t>(n_samples);
 
@@ -215,8 +205,7 @@ void meanAbsoluteError(const uint64_t n_samples, const uint64_t n_progs,
   // Compute absolute differences
   for (uint64_t pid = 0; pid < n_progs; ++pid) {
     for (uint64_t i = 0; i < n_samples; ++i) {
-      error[pid * n_samples + i] =
-          N * W[i] * abs(Y_pred[pid * n_samples + i] - Y[i]) / WS;
+      error[pid * n_samples + i] = N * W[i] * abs(Y_pred[pid * n_samples + i] - Y[i]) / WS;
     }
   }
 
@@ -230,9 +219,8 @@ void meanAbsoluteError(const uint64_t n_samples, const uint64_t n_progs,
 }
 
 template <typename math_t = float>
-void meanSquareError(const uint64_t n_samples, const uint64_t n_progs,
-                     const math_t *Y, const math_t *Y_pred, const math_t *W,
-                     math_t *out) {
+void meanSquareError(const uint64_t n_samples, const uint64_t n_progs, const math_t *Y,
+                     const math_t *Y_pred, const math_t *W, math_t *out) {
 
   std::vector<math_t> error(n_samples * n_progs);
   math_t N = static_cast<math_t>(n_samples);
@@ -246,8 +234,7 @@ void meanSquareError(const uint64_t n_samples, const uint64_t n_progs,
   // Compute absolute differences
   for (uint64_t pid = 0; pid < n_progs; ++pid) {
     for (uint64_t i = 0; i < n_samples; ++i) {
-      error[pid * n_samples + i] = N * W[i] *
-                                   (Y_pred[pid * n_samples + i] - Y[i]) *
+      error[pid * n_samples + i] = N * W[i] * (Y_pred[pid * n_samples + i] - Y[i]) *
                                    (Y_pred[pid * n_samples + i] - Y[i]) / WS;
     }
   }
@@ -262,9 +249,8 @@ void meanSquareError(const uint64_t n_samples, const uint64_t n_progs,
 }
 
 template <typename math_t = float>
-void rootMeanSquareError(const uint64_t n_samples, const uint64_t n_progs,
-                         const math_t *Y, const math_t *Y_pred, const math_t *W,
-                         math_t *out) {
+void rootMeanSquareError(const uint64_t n_samples, const uint64_t n_progs, const math_t *Y,
+                         const math_t *Y_pred, const math_t *W, math_t *out) {
 
   // Find MSE
   meanSquareError(n_samples, n_progs, Y, Y_pred, W, out);

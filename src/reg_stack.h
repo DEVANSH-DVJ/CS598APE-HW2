@@ -19,13 +19,19 @@ template <typename DataT, int MaxSize> struct stack {
   }
 
   /** Checks if the stack is empty */
-  bool empty() const { return elements_ == 0; }
+  bool empty() const {
+    return elements_ == 0;
+  }
 
   /** Current number of elements in the stack */
-  int size() const { return elements_; }
+  int size() const {
+    return elements_;
+  }
 
   /** Checks if the number of elements in the stack equal its capacity */
-  bool full() const { return elements_ == MaxSize; }
+  bool full() const {
+    return elements_ == MaxSize;
+  }
 
   /**
    * @brief Pushes the input element to the top of the stack
