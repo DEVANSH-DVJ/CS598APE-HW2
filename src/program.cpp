@@ -125,7 +125,12 @@ void find_batched_fitness(int n_progs, program_t d_progs, float *score, const pa
                           const float *sample_weights) {
 
   std::vector<float> y_pred((uint64_t)n_rows * (uint64_t)n_progs);
-  execute(d_progs, n_rows, n_progs, data, y_pred.data());
+  for (auto i = 0; i < n_progs; ++i) {
+    // a reproduced program keeps its fitness
+    if (d_progs[i].mut_type != mutation_t::reproduce) {
+      execute(d_progs + i, n_rows, 1, data, y_pred.data() + (uint64_t)i * n_rows);
+    }
+  }
 
   // Compute error
   compute_metric(n_rows, n_progs, y, y_pred.data(), sample_weights, score, params);
@@ -154,7 +159,9 @@ void set_batched_fitness(int n_progs, std::vector<program> &h_progs, const param
   // Update scores on host and device
   // TODO: Find a way to reduce the number of implicit memory transfers
   for (auto i = 0; i < n_progs; ++i) {
-    h_progs[i].raw_fitness_ = score[i];
+    if (h_progs[i].mut_type != mutation_t::reproduce) {
+      h_progs[i].raw_fitness_ = score[i];
+    }
   }
 }
 

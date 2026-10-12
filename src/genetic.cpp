@@ -165,8 +165,11 @@ void cpp_evolve(const std::vector<program> &h_oldprogs, std::vector<program> &h_
         hoist_mutation(h_oldprogs[parent_index], h_nextprogs[pos], params, h_gen);
       } else if (h_nextprogs[pos].mut_type == mutation_t::point) {
         point_mutation(h_oldprogs[parent_index], h_nextprogs[pos], params, h_gen);
+        // the copy took the parent's mutation type
+        h_nextprogs[pos].mut_type = mutation_t::point;
       } else if (h_nextprogs[pos].mut_type == mutation_t::reproduce) {
         h_nextprogs[pos] = h_oldprogs[parent_index];
+        h_nextprogs[pos].mut_type = mutation_t::reproduce;
       } else {
         // Should not come here
       }
