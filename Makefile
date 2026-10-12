@@ -1,4 +1,4 @@
-CXX := g++
+CXX := clang++
 CXXFLAGS := -std=c++17 -O3 -Wall -Wextra -I include -I.
 
 # Directories
