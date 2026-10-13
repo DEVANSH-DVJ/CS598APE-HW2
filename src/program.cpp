@@ -14,6 +14,25 @@
 
 namespace genetic {
 
+// evaluate a node for a block of rows, in the row loop compiled for its type T
+template <uint32_t T = 0>
+void evaluate_rows(const node &curr_node, const float *data, const uint64_t n_rows,
+                   const uint64_t row_id, const uint64_t n, const float *in0, const float *in1,
+                   float *res) {
+  // try the next type until T is the type of the node
+  if constexpr (T <= static_cast<uint32_t>(node::type::functions_end)) {
+    if (static_cast<uint32_t>(curr_node.t) != T)
+      return evaluate_rows<T + 1>(curr_node, data, n_rows, row_id, n, in0, in1, res);
+  }
+  // same node, its type a constant for the compiler
+  node typed(curr_node);
+  typed.t = static_cast<node::type>(T);
+  for (uint64_t i = 0; i < n; ++i) {
+    const float in[2] = {in0[i], in1[i]};
+    res[i] = detail::evaluate_node(typed, data, n_rows, row_id + i, in);
+  }
+}
+
 /**
  * Execution kernel for a single program. We assume that the input data
  * is stored in column major format.
@@ -50,10 +69,7 @@ void execute_kernel(const program_t d_progs, const float *data, float *y_pred,
         }
         // evaluate the node for every row of the block
         float *res = regs[eval_stack.size()];
-        for (uint64_t i = 0; i < n; ++i) {
-          const float in[2] = {in0[i], in1[i]};
-          res[i] = detail::evaluate_node(*curr_node, data, n_rows, row_id + i, in);
-        }
+        evaluate_rows(*curr_node, data, n_rows, row_id, n, in0, in1, res);
         eval_stack.push(res);
         curr_node--;
         end--;
