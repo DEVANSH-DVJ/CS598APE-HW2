@@ -1,4 +1,42 @@
-# 598APE-HW2
+# 598APE-HW2: optimized symbolic regression
+
+This fork speeds up the course symbolic regression benchmark with 14 optimizations, one commit each, and fixes a memory leak.
+No optimization needs special hardware.
+The original course README follows below.
+
+- **Tools:**
+  everything runs in the container built from `docker/Dockerfile`, which adds clang-format, matplotlib, the FlameGraph scripts, and rsvg-convert to the course image.
+  `./dockerrun.sh` builds the image on first use and opens a shell with this repository at `/host`, where the commands below run.
+- **Build and run:**
+  `make -j`, then `./genetic_benchmark <benchmark>` with `diabetes`, `cancer`, `housing`, `silk-wave`, or `square-wave`.
+  `OMP_NUM_THREADS` sets the thread count.
+- **Reproduce:**
+  `test/run.sh` builds every commit below and times the five benchmarks on it, three runs each on one thread, and `test/check.sh` checks that every commit prints the same program as the one before it.
+  The output changes at `opt12`, `opt13`, and `opt14`, as sections 2.7 and 2.8 of the report explain.
+  For the times at 32 threads we ran `taskset -c 0-31 env THREADS=32 OMP_PROC_BIND=close OMP_PLACES=cores test/run.sh opt9`, and likewise for the other commits and thread counts.
+- **Figures:**
+  `python3 plots/scripts/plot.py` and `plots/scripts/flame.sh` draw the figures of the report from the files in `plots/data/`.
+
+| Name    | Commit    | Change                                            | Report |
+| ------- | --------- | ------------------------------------------------- | ------ |
+| `base`  | `f19cc63` | unmodified course code                            |        |
+| `opt1`  | `90ed5bd` | compile at -O3                                    | 2.1    |
+| `opt2`  | `748924b` | build with clang++                                | 2.1    |
+| `opt3`  | `072febb` | index the stack by its element count              | 2.2    |
+| `opt4`  | `eede77e` | switch back to g++                                | 2.2    |
+| `opt5`  | `1686aff` | make node trivially copyable                      | 2.3    |
+| `opt6`  | `38471a7` | pick the best two programs without sorting        | 2.3    |
+| `opt7`  | `1d52105` | reuse the parent's fitness for unchanged children | 2.4    |
+| `opt8`  | `c969334` | score one program at a time                       | 2.4    |
+| `opt9`  | `f8da176` | evaluate programs in parallel                     | 2.5    |
+| `opt10` | `1685f0e` | evaluate each node over a block of rows           | 2.6    |
+| `opt11` | `76c0874` | compile the row loop once per node type           | 2.6    |
+| `opt12` | `32a809f` | create children in parallel                       | 2.7    |
+| `opt13` | `3835c9a` | call the vector libm functions                    | 2.8    |
+| `opt14` | `3aa8c0c` | reassociate floating-point sums                   | 2.8    |
+| `leak`  | `46f1da2` | free a replaced node array                        | 2.9    |
+
+---
 
 This repository contains code for homework 2 of 598APE.
 
