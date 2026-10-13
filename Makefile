@@ -1,5 +1,5 @@
 CXX := g++
-CXXFLAGS := -std=c++17 -O3 -Wall -Wextra -fopenmp -I include -I.
+CXXFLAGS := -std=c++17 -O3 -Wall -Wextra -fopenmp -fno-math-errno -fno-trapping-math -I include -I.
 
 # Directories
 SRC_DIR := src

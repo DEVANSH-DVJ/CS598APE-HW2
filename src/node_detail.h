@@ -5,6 +5,46 @@
 #include <cstdlib>
 #include <node.h>
 
+// libm functions with vector variants in libmvec
+extern "C" {
+#pragma omp declare simd notinbranch
+float acosf(float) noexcept;
+#pragma omp declare simd notinbranch
+float acoshf(float) noexcept;
+#pragma omp declare simd notinbranch
+float asinf(float) noexcept;
+#pragma omp declare simd notinbranch
+float asinhf(float) noexcept;
+#pragma omp declare simd notinbranch
+float atan2f(float, float) noexcept;
+#pragma omp declare simd notinbranch
+float atanf(float) noexcept;
+#pragma omp declare simd notinbranch
+float atanhf(float) noexcept;
+#pragma omp declare simd notinbranch
+float cbrtf(float) noexcept;
+#pragma omp declare simd notinbranch
+float cosf(float) noexcept;
+#pragma omp declare simd notinbranch
+float coshf(float) noexcept;
+#pragma omp declare simd notinbranch
+float expf(float) noexcept;
+#pragma omp declare simd notinbranch
+float log1pf(float) noexcept;
+#pragma omp declare simd notinbranch
+float logf(float) noexcept;
+#pragma omp declare simd notinbranch
+float powf(float, float) noexcept;
+#pragma omp declare simd notinbranch
+float sinf(float) noexcept;
+#pragma omp declare simd notinbranch
+float sinhf(float) noexcept;
+#pragma omp declare simd notinbranch
+float tanf(float) noexcept;
+#pragma omp declare simd notinbranch
+float tanhf(float) noexcept;
+}
+
 namespace genetic {
 namespace detail {
 
