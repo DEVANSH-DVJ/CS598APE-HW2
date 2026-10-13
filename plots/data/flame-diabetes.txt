@@ -1,0 +1,58 @@
+main;run_symbolic_regression 842646
+main;run_symbolic_regression;cfree;[libc] 842684
+main;run_symbolic_regression;insertionSortPrograms;cfree 842809
+main;run_symbolic_regression;insertionSortPrograms;node::node 8426943
+main;run_symbolic_regression;insertionSortPrograms;node::operator= 22748289
+main;run_symbolic_regression;insertionSortPrograms;program::operator= 32018134
+main;run_symbolic_regression;insertionSortPrograms;program::operator=;cfree;[libc] 3370610
+main;run_symbolic_regression;insertionSortPrograms;program::operator=;malloc 842347
+main;run_symbolic_regression;insertionSortPrograms;program::operator=;operator new;[libc] 842828
+main;run_symbolic_regression;insertionSortPrograms;program::operator=;operator new;malloc;[libc] 2527690
+main;run_symbolic_regression;std::getline 735788
+main;run_symbolic_regression;std::vector::_M_realloc_insert 841839
+main;run_symbolic_regression;symFit;cpp_evolve;[libc] 3364545
+main;run_symbolic_regression;symFit;cpp_evolve;[libc];[kernel] 1594125
+main;run_symbolic_regression;symFit;cpp_evolve;build_program 784878
+main;run_symbolic_regression;symFit;cpp_evolve;build_program;operator new;malloc;[libc] 774077
+main;run_symbolic_regression;symFit;cpp_evolve;cfree 841815
+main;run_symbolic_regression;symFit;cpp_evolve;crossover 4206548
+main;run_symbolic_regression;symFit;cpp_evolve;crossover;cfree 842089
+main;run_symbolic_regression;symFit;cpp_evolve;crossover;cfree;[libc] 842047
+main;run_symbolic_regression;symFit;cpp_evolve;crossover;get_depth 10938556
+main;run_symbolic_regression;symFit;cpp_evolve;crossover;get_depth;std::_Deque_base::_M_initialize_map;operator new;malloc 1681966
+main;run_symbolic_regression;symFit;cpp_evolve;crossover;get_depth;std::deque::emplace_back 1684079
+main;run_symbolic_regression;symFit;cpp_evolve;crossover;get_subtree 17671651
+main;run_symbolic_regression;symFit;cpp_evolve;crossover;get_subtree;philox_random_uint32 841936
+main;run_symbolic_regression;symFit;cpp_evolve;crossover;node::arity 2525547
+main;run_symbolic_regression;symFit;cpp_evolve;crossover;node::is_nonterminal 1683744
+main;run_symbolic_regression;symFit;cpp_evolve;crossover;node::node 1682979
+main;run_symbolic_regression;symFit;cpp_evolve;crossover;std::deque::emplace_back 2524182
+main;run_symbolic_regression;symFit;cpp_evolve;node::operator= 841847
+main;run_symbolic_regression;symFit;cpp_evolve;point_mutation 841074
+main;run_symbolic_regression;symFit;cpp_evolve;point_mutation;philox_random_uint32 841001
+main;run_symbolic_regression;symFit;cpp_evolve;program::operator= 840608
+main;run_symbolic_regression;symFit;cpp_evolve;set_batched_fitness;[libc] 1684344
+main;run_symbolic_regression;symFit;cpp_evolve;set_batched_fitness;[libc];[kernel] 10951633
+main;run_symbolic_regression;symFit;cpp_evolve;set_batched_fitness;[libm] 930187404
+main;run_symbolic_regression;symFit;cpp_evolve;set_batched_fitness;cosf 21018404
+main;run_symbolic_regression;symFit;cpp_evolve;set_batched_fitness;execute_kernel 1714092419
+main;run_symbolic_regression;symFit;cpp_evolve;set_batched_fitness;fdimf 12631538
+main;run_symbolic_regression;symFit;cpp_evolve;set_batched_fitness;logf 26948594
+main;run_symbolic_regression;symFit;cpp_evolve;set_batched_fitness;meanSquareError 13469769
+main;run_symbolic_regression;symFit;cpp_evolve;set_batched_fitness;sinf 21907525
+main;run_symbolic_regression;symFit;cpp_evolve;subtree_mutation;build_program 841938
+main;run_symbolic_regression;symFit;cpp_evolve;subtree_mutation;crossover;get_depth 840803
+main;run_symbolic_regression;symFit;cpp_evolve;subtree_mutation;crossover;get_subtree 2522728
+main;run_symbolic_regression;symFit;cpp_evolve;subtree_mutation;crossover;node::node 841535
+main;run_symbolic_regression;symFit;cpp_evolve;tournament_kernel 1684062
+main;run_symbolic_regression;symFit;cpp_evolve;tournament_kernel;philox_random_uint32 840651
+main;run_symbolic_regression;symFit;node::operator= 2524701
+main;run_symbolic_regression;symFit;program::operator= 842080
+main;run_symbolic_regression;symFit;program::program 2522673
+main;run_symbolic_regression;symFit;std::vector::_M_realloc_insert;program::program 841680
+main;run_symbolic_regression;symFit;std::vector::operator=;node::node 1684494
+main;run_symbolic_regression;symFit;std::vector::operator=;node::operator= 1684259
+main;run_symbolic_regression;symFit;std::vector::operator=;program::operator=;operator new;malloc;[libc] 842174
+main;run_symbolic_regression;utils::load_dataset;[libc] 695182
+main;run_symbolic_regression;utils::load_dataset;std::basic_ios::clear 716907
+main;run_symbolic_regression;utils::load_dataset;std::vector::vector;operator new;malloc;[libc] 751867

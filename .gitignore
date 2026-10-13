@@ -36,3 +36,4 @@ compile_commands.json
 genetic_benchmark
 test/build/
 test/results/
+plots/figures/

@@ -1,0 +1,106 @@
+main;[libc];[kernel] 649643
+main;free 834658
+main;run_symbolic_reconstruction 3363248
+main;run_symbolic_reconstruction;[kernel] 838837
+main;run_symbolic_reconstruction;[libc] 840353
+main;run_symbolic_reconstruction;[libc];[kernel] 840411
+main;run_symbolic_reconstruction;[libm] 838680
+main;run_symbolic_reconstruction;__munmap;[kernel] 837310
+main;run_symbolic_reconstruction;cfree 5036724
+main;run_symbolic_reconstruction;cfree;[libc] 10917719
+main;run_symbolic_reconstruction;execute_kernel 5871939
+main;run_symbolic_reconstruction;insertionSortPrograms;program::operator= 1677434
+main;run_symbolic_reconstruction;insertionSortPrograms;program::operator=;cfree 1677264
+main;run_symbolic_reconstruction;insertionSortPrograms;program::operator=;operator new;malloc 838626
+main;run_symbolic_reconstruction;memmove 838402
+main;run_symbolic_reconstruction;operator new 837910
+main;run_symbolic_reconstruction;operator new;malloc;[libc] 839217
+main;run_symbolic_reconstruction;std::vector::vector 840414
+main;run_symbolic_reconstruction;std::vector::vector;operator new;[libc] 840283
+main;run_symbolic_reconstruction;std::vector::vector;operator new;malloc;[libc] 1680249
+main;run_symbolic_reconstruction;symFit 838766
+main;run_symbolic_reconstruction;symFit;cpp_evolve 2515577
+main;run_symbolic_reconstruction;symFit;cpp_evolve;[libc] 218775329
+main;run_symbolic_reconstruction;symFit;cpp_evolve;[libc];[kernel] 4129964265
+main;run_symbolic_reconstruction;symFit;cpp_evolve;build_program;philox_random_uint32 2518110
+main;run_symbolic_reconstruction;symFit;cpp_evolve;crossover 1676773
+main;run_symbolic_reconstruction;symFit;cpp_evolve;crossover;free 838454
+main;run_symbolic_reconstruction;symFit;cpp_evolve;crossover;get_depth 838467
+main;run_symbolic_reconstruction;symFit;cpp_evolve;crossover;get_depth;cfree 838454
+main;run_symbolic_reconstruction;symFit;cpp_evolve;crossover;get_depth;cfree;[libc] 838515
+main;run_symbolic_reconstruction;symFit;cpp_evolve;crossover;get_depth;std::_Deque_base::_M_initialize_map;operator new;malloc 838725
+main;run_symbolic_reconstruction;symFit;cpp_evolve;crossover;get_subtree 4969708
+main;run_symbolic_reconstruction;symFit;cpp_evolve;crossover;get_subtree;operator new;malloc;[libc] 838264
+main;run_symbolic_reconstruction;symFit;cpp_evolve;crossover;get_subtree;philox_random_uint32 3354330
+main;run_symbolic_reconstruction;symFit;cpp_evolve;crossover;node::is_nonterminal 838727
+main;run_symbolic_reconstruction;symFit;cpp_evolve;crossover;node::node 838364
+main;run_symbolic_reconstruction;symFit;cpp_evolve;hoist_mutation;get_subtree 838223
+main;run_symbolic_reconstruction;symFit;cpp_evolve;philox_random_uint32 838687
+main;run_symbolic_reconstruction;symFit;cpp_evolve;point_mutation 1677057
+main;run_symbolic_reconstruction;symFit;cpp_evolve;point_mutation;program::operator= 838263
+main;run_symbolic_reconstruction;symFit;cpp_evolve;set_batched_fitness 1676287
+main;run_symbolic_reconstruction;symFit;cpp_evolve;set_batched_fitness;[libc] 232068146
+main;run_symbolic_reconstruction;symFit;cpp_evolve;set_batched_fitness;[libc];[kernel] 4254568846
+main;run_symbolic_reconstruction;symFit;cpp_evolve;set_batched_fitness;[libm] 12703066685
+main;run_symbolic_reconstruction;symFit;cpp_evolve;set_batched_fitness;[libm];[kernel] 40454621
+main;run_symbolic_reconstruction;symFit;cpp_evolve;set_batched_fitness;__munmap;[kernel] 7557247
+main;run_symbolic_reconstruction;symFit;cpp_evolve;set_batched_fitness;cfree;[libc];__default_morecore;brk;[kernel] 924674383
+main;run_symbolic_reconstruction;symFit;cpp_evolve;set_batched_fitness;execute_kernel 36791075520
+main;run_symbolic_reconstruction;symFit;cpp_evolve;set_batched_fitness;execute_kernel;[kernel] 29509083
+main;run_symbolic_reconstruction;symFit;cpp_evolve;set_batched_fitness;meanSquareError 5401774318
+main;run_symbolic_reconstruction;symFit;cpp_evolve;set_batched_fitness;meanSquareError;[kernel] 8397874
+main;run_symbolic_reconstruction;symFit;cpp_evolve;set_batched_fitness;meanSquareError;operator new;malloc;[libc];[kernel] 842527
+main;run_symbolic_reconstruction;symFit;cpp_evolve;set_batched_fitness;meanSquareError;operator new;malloc;[libc];__default_morecore;brk;[kernel] 842459
+main;run_symbolic_reconstruction;symFit;cpp_evolve;set_batched_fitness;operator new;malloc;[libc];[kernel] 838358
+main;run_symbolic_reconstruction;symFit;cpp_evolve;set_batched_fitness;operator new;malloc;[libc];__default_morecore;brk;[kernel] 838707
+main;run_symbolic_reconstruction;symFit;cpp_evolve;set_batched_fitness;sinf 1258415420
+main;run_symbolic_reconstruction;symFit;cpp_evolve;set_batched_fitness;sinf;[kernel] 1684603
+main;run_symbolic_reconstruction;symFit;cpp_evolve;subtree_mutation;build_program 4192804
+main;run_symbolic_reconstruction;symFit;cpp_evolve;subtree_mutation;build_program;cfree 838399
+main;run_symbolic_reconstruction;symFit;cpp_evolve;subtree_mutation;build_program;operator new 838359
+main;run_symbolic_reconstruction;symFit;cpp_evolve;subtree_mutation;build_program;operator new;malloc;[libc] 1677294
+main;run_symbolic_reconstruction;symFit;cpp_evolve;subtree_mutation;build_program;operator new;malloc;[libc];[kernel] 838618
+main;run_symbolic_reconstruction;symFit;cpp_evolve;subtree_mutation;build_program;operator new;malloc;[libc];__default_morecore;brk;[kernel] 3347991
+main;run_symbolic_reconstruction;symFit;cpp_evolve;subtree_mutation;build_program;philox_random_uint32 838758
+main;run_symbolic_reconstruction;symFit;cpp_evolve;subtree_mutation;crossover;get_depth;std::_Deque_base::_M_initialize_map 838663
+main;run_symbolic_reconstruction;symFit;cpp_evolve;subtree_mutation;crossover;get_depth;std::_Deque_base::_M_initialize_map;operator new;malloc 831061
+main;run_symbolic_reconstruction;symFit;cpp_evolve;subtree_mutation;crossover;get_subtree 2515455
+main;run_symbolic_reconstruction;symFit;cpp_evolve;subtree_mutation;crossover;get_subtree;cfree;[libc] 838668
+main;run_symbolic_reconstruction;symFit;cpp_evolve;subtree_mutation;crossover;get_subtree;philox_random_uint32 838752
+main;run_symbolic_reconstruction;symFit;cpp_evolve;subtree_mutation;node::node 838332
+main;run_symbolic_reconstruction;symFit;cpp_evolve;tournament_kernel 4192625
+main;run_symbolic_reconstruction;symFit;cpp_evolve;tournament_kernel;philox_random_uint32 3354643
+main;run_symbolic_reconstruction;symFit;operator new;malloc;[libc] 1676933
+main;run_symbolic_reconstruction;symFit;program::program 1677161
+main;run_symbolic_reconstruction;symFit;program::program;operator new 838710
+main;run_symbolic_reconstruction;symFit;program::program;operator new;malloc 838447
+main;run_symbolic_reconstruction;symFit;program::program;operator new;malloc;[libc] 838415
+main;run_symbolic_reconstruction;symFit;std::vector::_M_realloc_insert;operator new 838512
+main;run_symbolic_reconstruction;symFit;std::vector::_M_realloc_insert;program::program;operator new;malloc;[libc] 838512
+main;run_symbolic_reconstruction;symFit;std::vector::operator=;program::operator=;cfree 3354226
+main;run_symbolic_reconstruction;symFit;std::vector::operator=;program::operator=;cfree;[libc] 2515390
+main;run_symbolic_reconstruction;symFit;std::vector::operator=;program::operator=;operator new;[libc] 838294
+main;run_symbolic_reconstruction;symFit;std::vector::operator=;program::operator=;operator new;malloc 1676862
+main;run_symbolic_reconstruction;symFit;std::vector::operator=;program::operator=;operator new;malloc;[libc] 1676807
+main;run_symbolic_reconstruction;utils::load_png 2475302
+main;run_symbolic_reconstruction;utils::load_png;[kernel] 6471235
+main;run_symbolic_reconstruction;utils::load_png;[libc] 834877
+main;run_symbolic_reconstruction;utils::load_png;[libc];[kernel] 806678
+main;run_symbolic_reconstruction;utils::load_png;__munmap;[kernel] 782500
+main;run_symbolic_reconstruction;utils::load_png;operator new 840371
+main;run_symbolic_reconstruction;utils::load_png;operator new;[libc] 1669232
+main;run_symbolic_reconstruction;utils::load_png;operator new;malloc 2512877
+main;run_symbolic_reconstruction;utils::load_png;operator new;malloc;[libc] 11567002
+main;run_symbolic_reconstruction;utils::load_png;operator new;malloc;[libc];[kernel] 778939
+main;run_symbolic_reconstruction;utils::load_png;stbi__load_and_postprocess_8bit;stbi__load_main;stbi__convert_format 1593357
+main;run_symbolic_reconstruction;utils::load_png;stbi__load_and_postprocess_8bit;stbi__load_main;stbi__parse_png_file;[libc];[kernel] 755552
+main;run_symbolic_reconstruction;utils::load_png;stbi__load_and_postprocess_8bit;stbi__load_main;stbi__parse_png_file;stbi__create_png_image_raw 4916182
+main;run_symbolic_reconstruction;utils::load_png;stbi__load_and_postprocess_8bit;stbi__load_main;stbi__parse_png_file;stbi__parse_zlib 4029112
+main;run_symbolic_reconstruction;utils::load_png;stbi__load_and_postprocess_8bit;stbi__load_main;stbi__parse_png_file;stbi__parse_zlib;[kernel] 678938
+main;run_symbolic_reconstruction;utils::train_test_split 3359888
+main;run_symbolic_reconstruction;utils::train_test_split;[kernel] 1679496
+main;run_symbolic_reconstruction;utils::train_test_split;cfree 1677690
+main;run_symbolic_reconstruction;utils::train_test_split;cfree;[libc] 839185
+main;run_symbolic_reconstruction;utils::train_test_split;operator new;malloc;[libc] 3357856
+main;run_symbolic_reconstruction;utils::train_test_split;operator new;malloc;[libc];[kernel] 3355266
+main;run_symbolic_reconstruction;utils::train_test_split;std::vector::_M_realloc_insert;operator new;malloc;[libc];[kernel] 840212

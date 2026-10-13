@@ -1,0 +1,170 @@
+main;program::program 813018
+main;run_symbolic_classification;[libc] 840487
+main;run_symbolic_classification;__munmap;[kernel] 840123
+main;run_symbolic_classification;cfree 4195568
+main;run_symbolic_classification;cfree;[libc] 39464964
+main;run_symbolic_classification;insertionSortPrograms 194441032
+main;run_symbolic_classification;insertionSortPrograms;cfree 66529637
+main;run_symbolic_classification;insertionSortPrograms;free 52203995
+main;run_symbolic_classification;insertionSortPrograms;node::node 636483224
+main;run_symbolic_classification;insertionSortPrograms;node::operator= 2405209151
+main;run_symbolic_classification;insertionSortPrograms;operator delete 106082289
+main;run_symbolic_classification;insertionSortPrograms;operator delete[] 118690818
+main;run_symbolic_classification;insertionSortPrograms;operator new 167570466
+main;run_symbolic_classification;insertionSortPrograms;operator new[] 190996936
+main;run_symbolic_classification;insertionSortPrograms;program::operator= 4201831835
+main;run_symbolic_classification;insertionSortPrograms;program::operator=;[libc] 69057616
+main;run_symbolic_classification;insertionSortPrograms;program::operator=;cfree 431867278
+main;run_symbolic_classification;insertionSortPrograms;program::operator=;cfree;[libc] 761915754
+main;run_symbolic_classification;insertionSortPrograms;program::operator=;malloc 113666434
+main;run_symbolic_classification;insertionSortPrograms;program::operator=;operator new 248372497
+main;run_symbolic_classification;insertionSortPrograms;program::operator=;operator new;malloc 613740528
+main;run_symbolic_classification;insertionSortPrograms;program::operator=;operator new;malloc;[libc] 842305
+main;run_symbolic_classification;insertionSortPrograms;program::program 2523772
+main;run_symbolic_classification;insertionSortPrograms;program::program;operator new;malloc 1684453
+main;run_symbolic_classification;program::operator= 68154820
+main;run_symbolic_classification;program::program;[kernel] 783337
+main;run_symbolic_classification;std::getline 801720
+main;run_symbolic_classification;std::vector::vector;operator new;malloc 807915
+main;run_symbolic_classification;stringify;std::basic_string::_M_append;std::basic_string::_M_mutate;operator new;malloc;[libc] 5046200
+main;run_symbolic_classification;symClfPredict;operator new;malloc;[libc] 841632
+main;run_symbolic_classification;symFit 5013846
+main;run_symbolic_classification;symFit;[libc];[kernel] 1672207
+main;run_symbolic_classification;symFit;cfree;[libc] 2517154
+main;run_symbolic_classification;symFit;cpp_evolve 10078222
+main;run_symbolic_classification;symFit;cpp_evolve;[libc] 31035555
+main;run_symbolic_classification;symFit;cpp_evolve;[libc];[kernel] 540912992
+main;run_symbolic_classification;symFit;cpp_evolve;build_program 11668743
+main;run_symbolic_classification;symFit;cpp_evolve;build_program;cfree;[libc] 833801
+main;run_symbolic_classification;symFit;cpp_evolve;build_program;operator new;malloc 841799
+main;run_symbolic_classification;symFit;cpp_evolve;build_program;operator new;malloc;[libc] 2486046
+main;run_symbolic_classification;symFit;cpp_evolve;build_program;operator new;malloc;[libc];[kernel] 3357611
+main;run_symbolic_classification;symFit;cpp_evolve;build_program;philox_random_uint32 20782449
+main;run_symbolic_classification;symFit;cpp_evolve;build_program;std::_Deque_base::_M_initialize_map;operator new;malloc 793495
+main;run_symbolic_classification;symFit;cpp_evolve;build_program;std::deque::emplace_back 2521320
+main;run_symbolic_classification;symFit;cpp_evolve;crossover 26106014
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;cfree 11791138
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;cfree;[libc] 6738092
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;free 842167
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;get_depth 45478078
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;get_depth;cfree 4208716
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;get_depth;cfree;[libc] 4211230
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;get_depth;operator new 840463
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;get_depth;std::_Deque_base::_M_initialize_map 5896067
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;get_depth;std::_Deque_base::_M_initialize_map;operator new 2525458
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;get_depth;std::_Deque_base::_M_initialize_map;operator new;malloc 6735394
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;get_depth;std::deque::emplace_back 18528083
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;get_subtree 110314569
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;get_subtree;cfree 8421317
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;get_subtree;cfree;[libc] 3369177
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;get_subtree;malloc 842156
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;get_subtree;operator new 1683873
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;get_subtree;operator new;malloc 2526437
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;get_subtree;operator new;malloc;[libc] 1684375
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;get_subtree;philox_random_uint32 14318087
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;malloc 1684525
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;node::arity 8421702
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;node::is_nonterminal 15159844
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;node::node 10949506
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;node::operator= 4210889
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;operator delete 842120
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;operator new 3369154
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;operator new;malloc 4210707
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;operator new;malloc;[libc] 842285
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;operator new;malloc;[libc];[kernel] 2526469
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;philox_random_uint32 842027
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;std::_Deque_base::_M_initialize_map 842377
+main;run_symbolic_classification;symFit;cpp_evolve;crossover;std::deque::emplace_back 842350
+main;run_symbolic_classification;symFit;cpp_evolve;free 842349
+main;run_symbolic_classification;symFit;cpp_evolve;get_depth 2526120
+main;run_symbolic_classification;symFit;cpp_evolve;get_subtree 842321
+main;run_symbolic_classification;symFit;cpp_evolve;hoist_mutation;get_depth 842236
+main;run_symbolic_classification;symFit;cpp_evolve;hoist_mutation;get_subtree;operator new;malloc 841964
+main;run_symbolic_classification;symFit;cpp_evolve;node::operator= 9262985
+main;run_symbolic_classification;symFit;cpp_evolve;operator delete[] 842288
+main;run_symbolic_classification;symFit;cpp_evolve;operator new 1680139
+main;run_symbolic_classification;symFit;cpp_evolve;operator new[] 842059
+main;run_symbolic_classification;symFit;cpp_evolve;philox_random_uint32 35317109
+main;run_symbolic_classification;symFit;cpp_evolve;point_mutation 1684096
+main;run_symbolic_classification;symFit;cpp_evolve;point_mutation;philox_random_uint32 842386
+main;run_symbolic_classification;symFit;cpp_evolve;program::operator= 3368955
+main;run_symbolic_classification;symFit;cpp_evolve;program::operator=;operator new;malloc;[libc] 2526905
+main;run_symbolic_classification;symFit;cpp_evolve;set_batched_fitness 5031204
+main;run_symbolic_classification;symFit;cpp_evolve;set_batched_fitness;[libc] 30159262
+main;run_symbolic_classification;symFit;cpp_evolve;set_batched_fitness;[libc];[kernel] 559633741
+main;run_symbolic_classification;symFit;cpp_evolve;set_batched_fitness;[libm] 9928658242
+main;run_symbolic_classification;symFit;cpp_evolve;set_batched_fitness;[libm];[kernel] 6739347
+main;run_symbolic_classification;symFit;cpp_evolve;set_batched_fitness;__munmap;[kernel] 7553616
+main;run_symbolic_classification;symFit;cpp_evolve;set_batched_fitness;cfree;[libc];__default_morecore;brk;[kernel] 105712900
+main;run_symbolic_classification;symFit;cpp_evolve;set_batched_fitness;cosf 153321537
+main;run_symbolic_classification;symFit;cpp_evolve;set_batched_fitness;execute_kernel 10840500867
+main;run_symbolic_classification;symFit;cpp_evolve;set_batched_fitness;execute_kernel;[kernel] 9267086
+main;run_symbolic_classification;symFit;cpp_evolve;set_batched_fitness;expf 112888931
+main;run_symbolic_classification;symFit;cpp_evolve;set_batched_fitness;fdimf 40435576
+main;run_symbolic_classification;symFit;cpp_evolve;set_batched_fitness;fdimf;[kernel] 868497
+main;run_symbolic_classification;symFit;cpp_evolve;set_batched_fitness;log1pf 110357384
+main;run_symbolic_classification;symFit;cpp_evolve;set_batched_fitness;logLoss 2578879794
+main;run_symbolic_classification;symFit;cpp_evolve;set_batched_fitness;operator new;malloc;[libc];[kernel] 842212
+main;run_symbolic_classification;symFit;cpp_evolve;set_batched_fitness;sinf 70678038
+main;run_symbolic_classification;symFit;cpp_evolve;subtree_mutation;build_program 11788805
+main;run_symbolic_classification;symFit;cpp_evolve;subtree_mutation;build_program;cfree;[libc] 3368409
+main;run_symbolic_classification;symFit;cpp_evolve;subtree_mutation;build_program;operator new 842412
+main;run_symbolic_classification;symFit;cpp_evolve;subtree_mutation;build_program;operator new;malloc 842083
+main;run_symbolic_classification;symFit;cpp_evolve;subtree_mutation;build_program;operator new;malloc;[libc] 8421165
+main;run_symbolic_classification;symFit;cpp_evolve;subtree_mutation;build_program;operator new;malloc;[libc];__default_morecore;brk;[kernel] 842247
+main;run_symbolic_classification;symFit;cpp_evolve;subtree_mutation;build_program;philox_random_uint32 16843533
+main;run_symbolic_classification;symFit;cpp_evolve;subtree_mutation;build_program;std::deque::emplace_back 841977
+main;run_symbolic_classification;symFit;cpp_evolve;subtree_mutation;crossover 840104
+main;run_symbolic_classification;symFit;cpp_evolve;subtree_mutation;crossover;cfree;[libc] 842436
+main;run_symbolic_classification;symFit;cpp_evolve;subtree_mutation;crossover;get_depth 6738286
+main;run_symbolic_classification;symFit;cpp_evolve;subtree_mutation;crossover;get_depth;cfree 1684458
+main;run_symbolic_classification;symFit;cpp_evolve;subtree_mutation;crossover;get_depth;std::_Deque_base::_M_initialize_map;operator new 842198
+main;run_symbolic_classification;symFit;cpp_evolve;subtree_mutation;crossover;get_depth;std::deque::emplace_back 1684206
+main;run_symbolic_classification;symFit;cpp_evolve;subtree_mutation;crossover;get_subtree 8419468
+main;run_symbolic_classification;symFit;cpp_evolve;subtree_mutation;crossover;get_subtree;operator new;malloc 841983
+main;run_symbolic_classification;symFit;cpp_evolve;subtree_mutation;crossover;get_subtree;philox_random_uint32 2526567
+main;run_symbolic_classification;symFit;cpp_evolve;subtree_mutation;crossover;node::arity 842353
+main;run_symbolic_classification;symFit;cpp_evolve;subtree_mutation;crossover;operator new 1684708
+main;run_symbolic_classification;symFit;cpp_evolve;subtree_mutation;crossover;operator new;malloc 841933
+main;run_symbolic_classification;symFit;cpp_evolve;subtree_mutation;crossover;philox_random_uint32 841960
+main;run_symbolic_classification;symFit;cpp_evolve;subtree_mutation;node::operator= 1684038
+main;run_symbolic_classification;symFit;cpp_evolve;subtree_mutation;operator delete 842077
+main;run_symbolic_classification;symFit;cpp_evolve;subtree_mutation;std::deque::emplace_back 2526861
+main;run_symbolic_classification;symFit;cpp_evolve;tournament_kernel 333449103
+main;run_symbolic_classification;symFit;cpp_evolve;tournament_kernel;philox_random_uint32 234100696
+main;run_symbolic_classification;symFit;node::node 2518522
+main;run_symbolic_classification;symFit;node::operator= 15114604
+main;run_symbolic_classification;symFit;operator new;malloc;[libc] 841188
+main;run_symbolic_classification;symFit;operator new[] 839879
+main;run_symbolic_classification;symFit;program::operator= 1675479
+main;run_symbolic_classification;symFit;program::operator=;operator new;malloc;[libc] 1676566
+main;run_symbolic_classification;symFit;program::operator=;operator new;malloc;[libc];[kernel] 1679670
+main;run_symbolic_classification;symFit;program::program 13437277
+main;run_symbolic_classification;symFit;program::program;[kernel] 5039620
+main;run_symbolic_classification;symFit;program::program;operator new;[libc] 840813
+main;run_symbolic_classification;symFit;program::program;operator new;malloc 1679654
+main;run_symbolic_classification;symFit;program::program;operator new;malloc;[libc] 11750616
+main;run_symbolic_classification;symFit;program::program;operator new;malloc;[libc];[kernel] 15951967
+main;run_symbolic_classification;symFit;std::vector::_M_realloc_insert;node::operator= 1670737
+main;run_symbolic_classification;symFit;std::vector::_M_realloc_insert;operator new 837821
+main;run_symbolic_classification;symFit;std::vector::_M_realloc_insert;operator new;malloc;[libc] 1679639
+main;run_symbolic_classification;symFit;std::vector::_M_realloc_insert;program::program 7515329
+main;run_symbolic_classification;symFit;std::vector::_M_realloc_insert;program::program;[kernel] 4176322
+main;run_symbolic_classification;symFit;std::vector::_M_realloc_insert;program::program;malloc 840212
+main;run_symbolic_classification;symFit;std::vector::_M_realloc_insert;program::program;operator new;malloc;[libc] 5856223
+main;run_symbolic_classification;symFit;std::vector::_M_realloc_insert;program::program;operator new;malloc;[libc];[kernel] 1610563
+main;run_symbolic_classification;symFit;std::vector::operator= 2517244
+main;run_symbolic_classification;symFit;std::vector::operator=;node::node 1678743
+main;run_symbolic_classification;symFit;std::vector::operator=;node::operator= 26028013
+main;run_symbolic_classification;symFit;std::vector::operator=;operator new 839211
+main;run_symbolic_classification;symFit;std::vector::operator=;program::operator= 21650594
+main;run_symbolic_classification;symFit;std::vector::operator=;program::operator=;cfree 18469060
+main;run_symbolic_classification;symFit;std::vector::operator=;program::operator=;cfree;[libc] 6720292
+main;run_symbolic_classification;symFit;std::vector::operator=;program::operator=;operator new 2519596
+main;run_symbolic_classification;symFit;std::vector::operator=;program::operator=;operator new;malloc 3357388
+main;run_symbolic_classification;symFit;std::vector::operator=;program::operator=;operator new;malloc;[libc] 5695635
+main;run_symbolic_classification;symFit;std::vector::operator=;program::operator=;operator new;malloc;[libc];[kernel] 4133344
+main;run_symbolic_classification;utils::load_dataset;[libc] 3011992
+main;run_symbolic_classification;utils::load_dataset;__memcpy_chk 793780
+main;run_symbolic_classification;utils::load_dataset;std::getline 736519
+main;run_symbolic_classification;utils::load_dataset;std::getline;std::basic_string::_M_append 672504
