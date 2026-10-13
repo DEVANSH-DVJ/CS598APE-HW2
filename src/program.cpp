@@ -21,33 +21,46 @@ namespace genetic {
 template <int MaxSize = MAX_STACK_SIZE>
 void execute_kernel(const program_t d_progs, const float *data, float *y_pred,
                     const uint64_t n_rows, const uint64_t n_progs) {
-  for (uint64_t pid = 0; pid < n_progs; ++pid) {
-    for (uint64_t row_id = 0; row_id < n_rows; ++row_id) {
+  // a stack slot holds one value per row of a block
+  const uint64_t block = 1024;
+  // the last slot takes a push on a full stack
+  float regs[MaxSize + 1][block];
+  static const float zeros[block] = {};
 
-      stack<float, MaxSize> eval_stack;
+  for (uint64_t pid = 0; pid < n_progs; ++pid) {
+    for (uint64_t row_id = 0; row_id < n_rows; row_id += block) {
+      const uint64_t n = std::min(block, n_rows - row_id);
+
+      stack<float *, MaxSize> eval_stack;
+      // an empty stack pops zeros
+      auto pop = [&] { return eval_stack.empty() ? zeros : eval_stack.pop(); };
       program_t curr_p = d_progs + pid; // Current program
 
       int end = curr_p->len - 1;
       node *curr_node = curr_p->nodes + end;
 
-      float res = 0.0f;
-      float in[2] = {0.0f, 0.0f};
+      const float *in0 = zeros, *in1 = zeros;
 
       while (end >= 0) {
         if (detail::is_nonterminal(curr_node->t)) {
           int ar = detail::arity(curr_node->t);
-          in[0] = eval_stack.pop(); // Min arity of function is 1
+          in0 = pop(); // Min arity of function is 1
           if (ar > 1)
-            in[1] = eval_stack.pop();
+            in1 = pop();
         }
-        res = detail::evaluate_node(*curr_node, data, n_rows, row_id, in);
+        // evaluate the node for every row of the block
+        float *res = regs[eval_stack.size()];
+        for (uint64_t i = 0; i < n; ++i) {
+          const float in[2] = {in0[i], in1[i]};
+          res[i] = detail::evaluate_node(*curr_node, data, n_rows, row_id + i, in);
+        }
         eval_stack.push(res);
         curr_node--;
         end--;
       }
 
       // Outputs stored in col-major format
-      y_pred[pid * n_rows + row_id] = eval_stack.pop();
+      std::copy_n(pop(), n, y_pred + pid * n_rows + row_id);
     }
   }
 }
