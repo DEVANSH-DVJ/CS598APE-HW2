@@ -24,17 +24,16 @@ namespace genetic {
  *
  * @param progs         Device pointer to programs
  * @param win_indices   Winning indices for every tournament
- * @param seeds         Init seeds for choice selection
+ * @param gen           Random stream for choice selection
  * @param n_progs       Number of programs
  * @param n_tours       No of tournaments to be conducted
  * @param tour_size     No of programs considered per tournament(@c <=n_progs><)
  * @param criterion     Selection criterion for choices(min/max)
  * @param parsimony     Parsimony coefficient to account for bloat
  */
-void tournament_kernel(const std::vector<program> &progs, int *win_indices, const int seed,
+void tournament_kernel(const std::vector<program> &progs, int *win_indices, PhiloxEngine &gen,
                        const int n_progs, const int n_tours, const int tour_size,
                        const int criterion, const float parsimony) {
-  PhiloxEngine gen(seed);
   uniform_int_distribution_custom<int> rng(0, n_progs - 1);
 
   for (auto idx = 0; idx < n_tours; ++idx) {
@@ -92,10 +91,6 @@ void cpp_evolve(const std::vector<program> &h_oldprogs, std::vector<program> &h_
                 const param &params, const int generation, const int seed) {
   auto n_progs = params.population_size;
   auto tour_size = params.tournament_size;
-  auto n_tours = n_progs; // at least num_progs tournaments
-
-  // Seed engines
-  PhiloxEngine h_gen(seed); // use Philox instead of Mersenne Twister?
 
   uniform_real_distribution_custom<float> dist_U(0.0f, 1.0f);
 
@@ -103,7 +98,10 @@ void cpp_evolve(const std::vector<program> &h_oldprogs, std::vector<program> &h_
 
   if (generation == 1) {
     // Build random programs for the first generation
+#pragma omp parallel for
     for (auto i = 0; i < n_progs; ++i) {
+      // every child draws from its own stream
+      PhiloxEngine h_gen(seed, generation, i);
       build_program(h_nextprogs[i], params, h_gen);
     }
 
@@ -116,47 +114,40 @@ void cpp_evolve(const std::vector<program> &h_oldprogs, std::vector<program> &h_
     mut_probs[3] = params.p_point_mutation;
     std::partial_sum(mut_probs, mut_probs + 4, mut_probs);
 
-    for (auto i = 0; i < n_progs; ++i) {
+    auto criterion = params.criterion();
+
+#pragma omp parallel for
+    for (auto pos = 0; pos < n_progs; ++pos) {
+      // every child draws from its own stream
+      PhiloxEngine h_gen(seed, generation, pos);
       float prob = dist_U(h_gen);
+      auto n_tours = 1; // at least one tournament
 
       if (prob < mut_probs[0]) {
-        h_nextprogs[i].mut_type = mutation_t::crossover;
+        h_nextprogs[pos].mut_type = mutation_t::crossover;
         n_tours++;
       } else if (prob < mut_probs[1]) {
-        h_nextprogs[i].mut_type = mutation_t::subtree;
+        h_nextprogs[pos].mut_type = mutation_t::subtree;
       } else if (prob < mut_probs[2]) {
-        h_nextprogs[i].mut_type = mutation_t::hoist;
+        h_nextprogs[pos].mut_type = mutation_t::hoist;
       } else if (prob < mut_probs[3]) {
-        h_nextprogs[i].mut_type = mutation_t::point;
+        h_nextprogs[pos].mut_type = mutation_t::point;
       } else {
-        h_nextprogs[i].mut_type = mutation_t::reproduce;
+        h_nextprogs[pos].mut_type = mutation_t::reproduce;
       }
-    }
 
-    // Run tournaments
-    std::vector<int> d_win_indices(n_tours);
+      // Run tournaments
+      int d_win_indices[2];
+      tournament_kernel(h_oldprogs, d_win_indices, h_gen, n_progs, n_tours, tour_size, criterion,
+                        params.parsimony_coefficient);
 
-    auto criterion = params.criterion();
-    tournament_kernel(h_oldprogs, d_win_indices.data(), seed, n_progs, n_tours, tour_size,
-                      criterion, params.parsimony_coefficient);
+      // Perform host mutations
 
-    // dim3 nblks(raft::ceildiv(n_tours, GENE_TPB), 1, 1);
-    // batched_tournament_kernel<<<nblks, GENE_TPB, 0, stream>>>(
-    //     d_oldprogs, d_win_indices.data(), tour_seeds.data(), n_progs,
-    //     n_tours, tour_size, criterion, params.parsimony_coefficient);
-    // RAFT_CUDA_TRY(cudaPeekAtLastError());
-    // h.sync_stream(stream);
-
-    // Perform host mutations
-
-    auto donor_pos = n_progs;
-    for (auto pos = 0; pos < n_progs; ++pos) {
-      auto parent_index = d_win_indices[pos];
+      auto parent_index = d_win_indices[0];
 
       if (h_nextprogs[pos].mut_type == mutation_t::crossover) {
         // Get secondary index
-        auto donor_index = d_win_indices[donor_pos];
-        donor_pos++;
+        auto donor_index = d_win_indices[1];
         crossover(h_oldprogs[parent_index], h_oldprogs[donor_index], h_nextprogs[pos], params,
                   h_gen);
       } else if (h_nextprogs[pos].mut_type == mutation_t::subtree) {
